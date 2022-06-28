@@ -13,8 +13,17 @@ public class DeptDAO {
 	public DeptDAO() {
 		session = DBConn.getSqlSession();
 	}
+	
+	
 	public List<DeptDTO> searchAll() {
 		List<DeptDTO> datas = session.selectList("deptMapper.deptSelectAll");
 		return datas;
 	}
+	
+	public DeptDTO searchDeptId(int id) {
+		DeptDTO data = session.selectOne("deptMapper.deptSelectId", id);
+		return data;
+	}
+	
+	
 }

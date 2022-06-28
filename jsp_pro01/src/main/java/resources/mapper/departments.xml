@@ -10,4 +10,13 @@
 			 , LOCATION_ID AS locId
 		  FROM DEPARTMENTS
 	</select>
+	
+	<select id="deptSelectId" resultType="deptDto">
+		SELECT DEPARTMENT_ID AS deptId
+			 , DEPARTMENT_NAME AS deptName
+			 , MANAGER_ID AS mngId
+			 , LOCATION_ID AS locId
+		  FROM DEPARTMENTS
+		 WHERE DEPARTMENT_ID = #{id}
+	</select>
 </mapper>
