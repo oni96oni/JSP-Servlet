@@ -41,10 +41,11 @@ function formCheck(e) {
 			<th>DeptName</th>
 			<th>MngId</th>
 			<th>LocId</th>
+			<th></th>
 		</tr>
 		<% 
-			if(request.getAttribute("datas") != null) {
-				List<DeptDTO> datas = (List<DeptDTO>)request.getAttribute("datas");
+			if(request.getAttribute("datas") != null) { // 여기서는 List<DeptDTO> DB자료들을 받거나 search에 해당하는 DTO받아서 출력
+				List<DeptDTO> datas = (List<DeptDTO>)request.getAttribute("datas"); // Object type -> List<DeptDTO> 형변환
 				for(DeptDTO data: datas) {
 		%>
 		<tr>
@@ -52,12 +53,15 @@ function formCheck(e) {
 			<td><%=data.getDeptName() %></td>
 			<td><%=data.getMngId() %></td>
 			<td><a href="./locs?search=<%=data.getLocId() %>"><%=data.getLocId() %></a></td>
+			<td>
+				<button type="button" onclick="location.href='./depts/mod?id=<%=data.getDeptId() %>'">수정</button>
+			</td>
 		</tr>
 		<% 		}
 			} else {
 		%>
 		<tr>
-			<td colspan="4">검색 결과가 없습니다.</td>
+			<td colspan="5">검색 결과가 없습니다.</td>
 		</tr>	
 		<%
 			}
