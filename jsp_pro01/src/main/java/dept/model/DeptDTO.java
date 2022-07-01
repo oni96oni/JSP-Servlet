@@ -1,37 +1,42 @@
 package dept.model;
 
-public class DeptDTO { //데이터베이스 조회한 결과를 받을 객체
+public class DeptDTO {
 	private int deptId;
 	private String deptName;
 	private int mngId;
 	private int locId;
 	
-	
 	public int getDeptId() {
 		return deptId;
 	}
+	
 	public void setDeptId(int deptId) {
 		this.deptId = deptId;
 	}
+	
 	public String getDeptName() {
 		return deptName;
 	}
+	
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
 	}
+	
 	public int getMngId() {
 		return mngId;
 	}
+	
 	public void setMngId(int mngId) {
 		this.mngId = mngId;
 	}
+	
 	public int getLocId() {
 		return locId;
 	}
+	
 	public void setLocId(int locId) {
 		this.locId = locId;
 	}
-	
 	
 	@Override
 	public String toString() {

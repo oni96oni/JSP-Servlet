@@ -18,7 +18,7 @@ public class DeptModController extends HttpServlet {
 	DeptService service = new DeptService();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id"); // index.jsp에서 수정버튼 클릭시 해당 data.getDeptId()
+		String id = request.getParameter("id");
 		
 		DeptDTO data = service.getDeptId(id);
 		

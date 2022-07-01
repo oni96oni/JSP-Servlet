@@ -10,6 +10,20 @@
 		     , LOCATION_ID AS locId
 		  FROM DEPARTMENTS
 	</select>
+	<select id="deptSelectPage" parameterType="map" resultType="deptDto">
+		SELECT *
+		  FROM (SELECT ROWNUM AS RN
+		             , DEPARTMENT_ID AS deptId
+		             , DEPARTMENT_NAME AS deptName
+		             , MANAGER_ID AS mngId
+		             , LOCATION_ID AS locId
+		          FROM DEPARTMENTS
+		       )
+		 WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	<select id="deptRowCount" resultType="_int">
+		SELECT COUNT(*) FROM DEPARTMENTS
+	</select>
 	<select id="deptSelectId" resultType="deptDto">
 		SELECT DEPARTMENT_ID AS deptId
 		     , DEPARTMENT_NAME AS deptName
@@ -37,4 +51,8 @@
 		     , LOCATION_ID = #{locId}
 		 WHERE DEPARTMENT_ID = #{deptId}
 	</update>
+	<delete id="deptDelete">
+		DELETE FROM DEPARTMENTS
+		 WHERE DEPARTMENT_ID = #{id}
+	</delete>
 </mapper>
