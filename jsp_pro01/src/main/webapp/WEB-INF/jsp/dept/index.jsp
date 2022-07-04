@@ -65,7 +65,7 @@ function formCheck(e) {
 			} else {
 		%>
 			<tr>
-				<td colspan="4">검색 결과가 없습니다.</td>
+				<td colspan="5">검색 결과가 없습니다.</td>
 			</tr>
 		<%
 			}
@@ -74,7 +74,7 @@ function formCheck(e) {
 	<%
 		if(request.getAttribute("pageList") != null) {
 			List<Integer> pageList = (List<Integer>) request.getAttribute("pageList");
-			int currentPage = Integer.parseInt(request.getParameter("page"));
+			int currentPage = (int)(request.getAttribute("page"));
 	%>
 			<ul>
 	<%

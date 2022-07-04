@@ -13,6 +13,24 @@
 		  FROM LOCATIONS
 	</select>
 	
+	<select id="locsSelectPage" parameterType="map" resultType="locsDto">
+		SELECT *
+		  FROM (SELECT ROWNUM AS RN
+		             , LOCATION_ID AS locsId
+					 , STREET_ADDRESS AS strAdd
+					 , POSTAL_CODE AS posCode
+					 , CITY AS city
+					 , STATE_PROVINCE AS staPro
+					 , COUNTRY_ID AS conId
+		 		  FROM LOCATIONS
+		       )
+		 WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="locsRowCount" resultType="_int">
+		SELECT COUNT(*) FROM LOCATIONS
+	</select>
+	
 	<select id="locsSelectId" resultType="locsDto">
 		SELECT LOCATION_ID AS locsId
 			 , STREET_ADDRESS AS strAdd
@@ -23,4 +41,29 @@
 		  FROM LOCATIONS
 		 WHERE LOCATION_ID = #{id}
 	</select>
+	
+	<select id="existConId" resultType="_int">
+		SELECT COUNT(*) FROM COUNTRIES
+		 WHERE COUNTRY_ID = #{id}
+	</select>
+	
+	<insert id="locsInsert" parameterType="locsDto">
+		INSERT INTO LOCATIONS
+		     VALUES (#{locsId}, #{strAdd}, #{posCode}, #{city}, #{staPro}, #{conId})
+	</insert>
+	
+	<update id="locsUpdate" parameterType="locsDto">
+		UPDATE LOCATIONS
+		   SET STREET_ADDRESS = #{strAdd}
+		     , POSTAL_CODE = #{posCode}
+		     , CITY = #{city}
+		     , STATE_PROVINCE= #{staPro}
+		     , COUNTRY_ID = #{conId}
+		 WHERE LOCATION_ID = #{locsId}
+	</update>
+	
+	<delete id="locsDelete">
+		DELETE FROM LOCATIONS
+		 WHERE LOCATION_ID = #{id}
+	</delete>
 </mapper>

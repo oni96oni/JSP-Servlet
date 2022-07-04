@@ -24,6 +24,10 @@ public class DeptController extends HttpServlet {
 		String page = request.getParameter("page"); // url로 요청받음
 		int count = 3;
 		
+		if(page == null) {
+			page = "1";
+		}
+		
 		List<DeptDTO> datas = null;
 		if(search == null) {
 			int pageNum = 1;
@@ -34,6 +38,7 @@ public class DeptController extends HttpServlet {
 			}
 			datas = service.getPage(pageNum, count);
 			request.setAttribute("pageList", service.getPageNumberList(count));
+			request.setAttribute("page", pageNum);
 		} else {
 			DeptDTO data = service.getDeptId(search);
 			if(data != null) {

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dept.model.DeptDTO;
 import locs.model.LocsDTO;
 import locs.service.LocsService;
 
@@ -21,12 +22,25 @@ public class LocsController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String search = request.getParameter("search"); // 사용자가 입력한 데이터 저장
-		System.out.println(search);
+		String page = request.getParameter("page");
+		int count = 5;
+		
+		
+		if(page == null) {
+			page = "1";
+		}
 		
 		List<LocsDTO> datas = null;
-		
-		if(search == null || search == "") {
-			datas = service.getAll();
+		if(search == null) {
+			int pageNum = 1;
+			if(page != null) {
+				if(!page.isEmpty() && page.matches("\\d+")) {
+					pageNum = Integer.parseInt(page);
+				}
+			}
+			datas = service.getPage(pageNum, count);
+			request.setAttribute("pageList", service.getPageNumberList(count));
+			request.setAttribute("page", pageNum);
 		} else {
 			LocsDTO data = service.getLocsId(search);
 			if(data != null) {
