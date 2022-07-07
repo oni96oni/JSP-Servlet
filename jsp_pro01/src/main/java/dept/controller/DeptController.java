@@ -28,6 +28,7 @@ public class DeptController extends HttpServlet {
 			page = "1";
 		}
 		
+		request.setAttribute("menuLocation", "depts");
 		List<DeptDTO> datas = null;
 		if(search == null) {
 			int pageNum = 1;

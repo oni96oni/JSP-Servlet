@@ -1,107 +1,116 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="java.util.*, locs.model.LocsDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>지역 조회 결과</title>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/default.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/form.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/navigation.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/paging.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/required.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/table.css">
+	<script type="text/javascript" src="<%=request.getContextPath() %>/static/js/required.js"></script>
 </head>
-<script type="text/javascript">
-window.onload = function() { //페이지가 로드완료되면 실행하겠다.
-	var form = document.forms[0];
-	form.addEventListener("submit", formCheck);
-}
 
-function formCheck(e) {
-	var f = e.target;
-	e.preventDefault();
-	
-	if(f.search.value.trim() === "") {
-		f.search.value = f.search.value.trim();
-		return;
-	}
-	f.submit();
-}
-</script>
 <body>
-	<h1>지역 조회 결과</h1>
-	<div>
-		<button type="button" onclick="location.href='./locs/add'">추가</button>
-	</div>
-	<div>
-		<form action="./locs" method="get">
-			<div>
-				<input type="text" name="search">
-				<button type="submit">조회</button>
-			</div>
-		</form>
-	</div>
-	<table>
-		<tr>
-			<th>LocsId</th>
-			<th>StrAdd</th>
-			<th>PosCode</th>
-			<th>CITY</th>
-			<th>StaPro</th>
-			<th>ConId</th>
-		</tr>
-		<% 
-			if(request.getAttribute("datas") != null) {
-				List<LocsDTO> datas = (List<LocsDTO>)request.getAttribute("datas");
-				for(LocsDTO data: datas) {
-		%>
+	<%@ include file="/WEB-INF/jsp/module/navigation.jsp" %>
+	<section class="container">
+		<div>
+			<form action="./locs" method="get">
+				<div class="input-form form-left">
+					<button class="btn btn-outline" type="button" onclick="location.href='./locs/add'">추가</button>
+				</div>
+				<div class="input-form form-right">
+					<input class="input-text" type="text" name="search">
+					<button class="btn btn-outline" type="submit">조회</button>
+				</div>
+			</form>
+		</div>
+	<table class="table wide vertical-hidden hover">
+		<colgroup>
+			<col class="col-60">
+			<col class="col-auto">
+			<col class="col-60">
+			<col class="col-60">
+			<col class="col-120">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Location ID</th>
+				<th>Street Address</th>
+				<th>Postal Code</th>
+				<th>City</th>
+				<th>State Province</th>
+				<th>Country Id</th>
+				<th class="border-hidden-right"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:if test="${not empty datas}">
+				<c:forEach items="${datas}" var="data">
 					<tr>
-						<td><%=data.getLocsId() %></td>
-						<td><%=data.getStrAdd() %></td>
-						<td><%=data.getPosCode() %></td>
-						<td><%=data.getCity() %></td>
-						<td><%=data.getStaPro() %></td>
-						<td><%=data.getConId() %></td>
+						<td>${data.locsId}</td>
+						<td>${data.strAdd}</td>
+						<td>${data.posCode}</td>
+						<td>${data.city}</td>
+						<td>${data.staPro}</td>
+						<td>${data.conId}</td>
 						<td>
-							<button type="button" onclick="location.href='./locs/mod?id=<%=data.getLocsId() %>'">수정</button>
-							<button type="button" onclick="location.href='./locs/del?id=<%=data.getLocsId() %>'">삭제</button>
+							<button class="btn btn-icon" type="button" onclick="location.href='./depts/mod?id=${data.locsId}'">
+								<span class="material-symbols-outlined">edit</span>
+							</button>
+							<button class="btn btn-icon" type="button" onclick="location.href='./depts/del?id=${data.locsId}'">
+								<span class="material-symbols-outlined">delete</span>
+							</button>
 						</td>
 					</tr>
-		<%
-				}
-			} else {
-		%>
-		<tr>
-			<td colspan="7">검색 결과가 없습니다.</td>
-		</tr>	
-		<%
-			}
-		%>
+				</c:forEach>
+			</c:if>
+		</tbody>
 	</table>
 	<%
 		if(request.getAttribute("pageList") != null) {
 			List<Integer> pageList = (List<Integer>) request.getAttribute("pageList");
 			int currentPage = (int)(request.getAttribute("page"));
 	%>
-			<ul>
+		<div class="paging">
+			<ul class="page center">
 	<%
 			if(currentPage - 1 > 0) {
 	%>
-				<li><a href="./locs?page=<%=currentPage - 1 %>">Prev</a></li>
+				<li class="page-item">
+					<a class="page-link" href="./locs?page=<%=currentPage - 1 %>">Prev</a>
+				</li>
 	<%
 			}
 			int i = currentPage - 1;
 			int maxPage = i + 5 > pageList.size() ? pageList.size() : i + 5;
 			for(; i < maxPage; i++) {
 	%>
-				<li><a href="./locs?page=<%=pageList.get(i) %>"><%=pageList.get(i) %></a></li>
+				<li class="page-item">
+					<a class="page-link" href="./locs?page=<%=pageList.get(i) %>"><%=pageList.get(i) %></a>
+				</li>
 	<%
 			}
 			if(currentPage + 1 <= pageList.size()) {
 	%>
-				<li><a href="./locs?page=<%=currentPage + 1 %>">Next</a></li>
+				<li class="page-item">
+					<a class="page-link" href="./locs?page=<%=currentPage + 1 %>">Next</a>
+				</li>
 	<%
 			}
 	%>
 			</ul>
+		</div>
 	<%
 		}
 	%>
+	</section>
 </body>
 </html>

@@ -1,11 +1,14 @@
 package main.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import dept.model.DeptDTO;
 
 @WebServlet("/main")
 public class MainController extends HttpServlet {
@@ -13,6 +16,10 @@ public class MainController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String view = "/WEB-INF/jsp/index.jsp"; //jsp파일의 경로
+		DeptDTO data = new DeptDTO();
+		data.setDeptId(100);
+		data.setDeptName("Test");
+		request.setAttribute("data", data);
 		request.getRequestDispatcher(view).forward(request, response);
 	}
 }

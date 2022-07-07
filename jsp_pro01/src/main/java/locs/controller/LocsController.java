@@ -25,11 +25,11 @@ public class LocsController extends HttpServlet {
 		String page = request.getParameter("page");
 		int count = 5;
 		
-		
 		if(page == null) {
 			page = "1";
 		}
 		
+		request.setAttribute("menuLocation", "locs");
 		List<LocsDTO> datas = null;
 		if(search == null) {
 			int pageNum = 1;

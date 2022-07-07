@@ -42,18 +42,22 @@ public class DeptAddController extends HttpServlet {
 		String view = "/WEB-INF/jsp/dept/add.jsp";
 		switch(status) {
 			case SUCCESS:
-				response.sendRedirect("/jsp01/depts?search=" + data.getDeptId());
+				response.sendRedirect("/depts?search=" + data.getDeptId());
 				return;
 			case DEPT_ID_DUPLICATED:
+				request.setAttribute("errorCode", "deptId");
 				request.setAttribute("errorMsg", "부서 ID 중복 오류가 발생하였습니다.");
 				break;
 			case MNG_ID_NOT_EXISTS:
+				request.setAttribute("errorCode", "mngId");
 				request.setAttribute("errorMsg", "관리자 ID가 존재하지 않습니다.");
 				break;
 			case LOC_ID_NOT_EXISTS:
+				request.setAttribute("errorCode", "locId");
 				request.setAttribute("errorMsg", "지역 ID가 존재하지 않습니다.");
 				break;
 			case FAILED:
+				request.setAttribute("errorCode", "error");
 				request.setAttribute("errorMsg", "알 수 없는 오류가 발생하였습니다.");
 				break;
 		}
