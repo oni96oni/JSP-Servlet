@@ -2,27 +2,27 @@
     pageEncoding="UTF-8"%>
 <%
 	String menuLocation = "";
-	if(request.getAttribute("munuLocation") != null) {
-		menuLocation = (String)request.getAttribute("menuLocation"); // String으로 넘어오는것이 아니라 Object로 넘어온다!
+	if(request.getAttribute("menuLocation") != null) {
+		menuLocation = (String)request.getAttribute("menuLocation");
 	}
 %>
 <header>
 	<nav class="top-nav center">
 		<ul class="nav">
 			<li class="nav-item dropdown">
-				<a class="nav-link" href="#"> JSP</a>
+				<a class="nav-link" href="#">JSP/Servlet</a>
 				<ul class="nav dropdown-nav">
 					<li class="nav-item">
-						<a class="nav-link" href="./jsp/script_tag">JSP - Script Tag</a>
+						<a class="nav-link" href="./jsp/script_tag">Script Tag</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="./jsp/request">JSP - request</a>
+						<a class="nav-link" href="./jsp/request">request</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="./jsp/response">JSP - response</a>
+						<a class="nav-link" href="./jsp/response">response</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="./jsp/mvc">JSP - MVC Model</a>
+						<a class="nav-link" href="./jsp/mvc">MVC Model</a>
 					</li>
 				</ul>
 			</li>

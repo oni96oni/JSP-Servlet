@@ -29,6 +29,12 @@
 				<div class="input-form form-right">
 					<input class="input-text" type="text" name="search">
 					<button class="btn btn-outline" type="submit">조회</button>
+					<select class="select-form" onchange="location.href='./depts?pgc=' + this.value">
+						<option value="5" ${pgc == 5 ? 'selected' : '' }>5 개</option>
+						<option value="10" ${pgc == 10 ? 'selected' : '' }>10 개</option>
+						<option value="15" ${pgc == 15 ? 'selected' : '' }>15 개</option>
+						<option value="20" ${pgc == 20 ? 'selected' : '' }>20 개</option>
+					</select>
 				</div>
 			</form>
 		</div>
@@ -42,10 +48,10 @@
 			</colgroup>
 			<thead>
 				<tr>
-					<th>DeptId</th>
-					<th>DeptName</th>
-					<th>MngId</th>
-					<th>LocId</th>
+					<th onclick="location.href='./depts?sort=deptId'">DeptId</th>
+					<th onclick="location.href='./depts?sort=deptName'">DeptName</th>
+					<th onclick="location.href='./depts?sort=mngId'">MngId</th>
+					<th onclick="location.href='./depts?sort=locId'">LocId</th>
 					<th class="border-hidden-right"></th>
 				</tr>
 			</thead>
@@ -57,7 +63,7 @@
 						<td>${data.deptName}</td>
 						<td>${data.mngId}</td>
 						<td><a href="./locs?search=${data.locId}">${data.locId}</a></td>
-						<td>
+						<td class="border-hidden-right">
 							<button class="btn btn-icon" type="button" onclick="location.href='./depts/mod?id=${data.deptId}'">
 								<span class="material-symbols-outlined">edit</span>
 							</button>
@@ -70,50 +76,31 @@
 			</c:if>
 			</tbody>
 		</table>
-		<c:set var="currentPage" value="${page}" />
+		<c:if test="${not empty pageList}">
 		<c:set var="pageList" value="${pageList}" />
-		<c:if test="not empty pageList">
-		<!-- 배열은 어떻게?? -->
+			<c:set var="currentPage" value="${page}" />
+				<div class="paging">
+					<ul class="page center">
+						<c:if test="${currentPage - 1 > 0 }">
+							<li class="page-item">
+							<a class="page-link" href="./depts?page=${currentPage - 1}">Prev</a>
+							</li>
+						</c:if>
+						<c:set var="i" value="${currentPage - 1}"/>
+						<c:set var="maxPage" value="${i+5 > pageList.size() ? pageList.size() : i + 5}" />
+						<c:forEach begin="${i}" end="${maxPage - 1}" var="num">
+							<li class="page-item">
+								<a class="page-link" href="./depts?page=${pageList.get(num)}">${pageList.get(num)}></a>
+							</li>
+						</c:forEach>
+						<c:if test="${currentPage + 1 <= pageList.size()}">
+							<li class="page-item">
+								<a class="page-link" href="./depts?page=${currentPage + 1}">Next</a>
+							</li>
+						</c:if>
+					</ul>
+				</div>
 		</c:if>
-		<%
-			if(request.getAttribute("pageList") != null) {
-				List<Integer> pageList = (List<Integer>) request.getAttribute("pageList");
-				int currentPage = (int)(request.getAttribute("page"));
-		%>
-			<div class="paging">
-				<ul class="page center">
-		<%
-				if(currentPage - 1 > 0) {
-		%>
-		<c:if test="${currentPage -1 > 0}">
-			<li class="page-item">
-				<a class="page-link" href="./depts?page=<%=currentPage - 1 %>">Prev</a>
-			</li>
-		</c:if>
-		<%
-				}
-				int i = currentPage - 1;
-				int maxPage = i + 5 > pageList.size() ? pageList.size() : i + 5;
-				for(; i < maxPage; i++) {
-		%>
-					<li class="page-item">
-						<a class="page-link" href="./depts?page=<%=pageList.get(i) %>"><%=pageList.get(i) %></a>
-					</li>
-		<%
-				}
-				if(currentPage + 1 <= pageList.size()) {
-		%>
-					<li class="page-item">
-						<a class="page-link" href="./depts?page=<%=currentPage + 1 %>">Next</a>
-					</li>
-		<%
-				}
-		%>
-				</ul>
-			</div>
-		<%
-			}
-		%>
 	</section>
 </body>
 </html>

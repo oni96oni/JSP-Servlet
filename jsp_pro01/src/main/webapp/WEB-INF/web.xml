@@ -12,6 +12,13 @@
   	<url-pattern>/mc</url-pattern>
   </servlet-mapping>-->
   
+  <!-- 
+  	분단위로 설정하는 세션만료시간
+   -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.jsp</welcome-file>

@@ -34,10 +34,11 @@
 		</div>
 	<table class="table wide vertical-hidden hover">
 		<colgroup>
-			<col class="col-60">
+			<col class="col-120">
 			<col class="col-auto">
-			<col class="col-60">
-			<col class="col-60">
+			<col class="col-120">
+			<col class="col-120">
+			<col class="col-180">
 			<col class="col-120">
 		</colgroup>
 		<thead>
@@ -61,7 +62,7 @@
 						<td>${data.city}</td>
 						<td>${data.staPro}</td>
 						<td>${data.conId}</td>
-						<td>
+						<td class="border-hidden-right">
 							<button class="btn btn-icon" type="button" onclick="location.href='./depts/mod?id=${data.locsId}'">
 								<span class="material-symbols-outlined">edit</span>
 							</button>
@@ -74,43 +75,31 @@
 			</c:if>
 		</tbody>
 	</table>
-	<%
-		if(request.getAttribute("pageList") != null) {
-			List<Integer> pageList = (List<Integer>) request.getAttribute("pageList");
-			int currentPage = (int)(request.getAttribute("page"));
-	%>
+	<c:if test="${not empty pageList}">
+		<c:set var="pageList" value="${pageList}"/>
+		<c:set var="currentPage" value="${page}" />
 		<div class="paging">
 			<ul class="page center">
-	<%
-			if(currentPage - 1 > 0) {
-	%>
-				<li class="page-item">
-					<a class="page-link" href="./locs?page=<%=currentPage - 1 %>">Prev</a>
-				</li>
-	<%
-			}
-			int i = currentPage - 1;
-			int maxPage = i + 5 > pageList.size() ? pageList.size() : i + 5;
-			for(; i < maxPage; i++) {
-	%>
-				<li class="page-item">
-					<a class="page-link" href="./locs?page=<%=pageList.get(i) %>"><%=pageList.get(i) %></a>
-				</li>
-	<%
-			}
-			if(currentPage + 1 <= pageList.size()) {
-	%>
-				<li class="page-item">
-					<a class="page-link" href="./locs?page=<%=currentPage + 1 %>">Next</a>
-				</li>
-	<%
-			}
-	%>
 			</ul>
 		</div>
-	<%
-		}
-	%>
+			<c:if test="${currentPage - 1 > 0 }">
+				<li class="page-item">
+					<a class="page-link" href="./locs?page=${currentPage - 1}">Prev</a>
+				</li>
+			</c:if>
+			<c:set var="i" value="${currentPage - 1}"/>
+			<c:set var="maxPage" value="${i+5 > pageList.size() ? pageList.size() : i + 5}" />
+			<c:forEach begin="${i}" end="${maxPage - 1}" var="num">
+				<li class="page-item">
+					<a class="page-link" href="./locs?page=${pageList.get(i)}">${pageList.get(i)}</a>
+				</li>
+			</c:forEach>
+			<c:if test="${currentPage + 1 <= pageList.size()}">
+				<li class="page-item">
+					<a class="page-link" href="./locs?page=${currentPage + 1}">Next</a>
+				</li>
+			</c:if>
+	</c:if>
 	</section>
 </body>
 </html>

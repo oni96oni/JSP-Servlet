@@ -18,7 +18,8 @@
 	width: 100%;
 }
 
-.input-text {
+.input-text,
+.select-form {
 	padding: 0.4rem 0.8rem;
 	border: 1px solid gray;
 	outline-style: none;
