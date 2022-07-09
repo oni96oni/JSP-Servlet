@@ -33,6 +33,16 @@ public class DeptDAO {
 		return datas;
 	}
 	
+	public List<DeptDTO> sortPage(int start, int end, String sort) {
+		Map page = new HashMap();
+		page.put("start", start);
+		page.put("end", end);
+		page.put("sort", sort);
+		List<DeptDTO> datas = session.selectList("deptMapper.deptSelectPageOrder", page);
+		System.out.println("session.selectList(deptMapper.deptSelectPageOrder, page) 실행");
+		return datas;
+	}
+	
 	public int rowCount() {
 		int count = session.selectOne("deptMapper.deptRowCount");
 		return count;

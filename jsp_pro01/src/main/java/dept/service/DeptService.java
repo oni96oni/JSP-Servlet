@@ -3,6 +3,9 @@ package dept.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+
 import dept.model.DeptDAO;
 import dept.model.DeptDTO;
 
@@ -61,6 +64,24 @@ public class DeptService {
 			pageList.add(n + 1);
 		}
 		return pageList;
+	}
+	
+	public List<DeptDTO> getSortPage(int pageNumber, int count, String sort) {
+		int start = (pageNumber - 1) * count + 1;
+		int end = start + count - 1;
+		String order = "";
+		if(sort == "deptId") {
+			sort="DEPARTMENT_ID";
+		} else if (sort == "deptName") {
+			sort="DEPARTMENT_NAME";
+		} else if (sort == "deptName") {
+			sort="MANAGER_ID";
+		} else {
+			sort="LOCATION_ID";
+		}
+		List<DeptDTO> datas = dao.sortPage(start, end, sort);
+		System.out.println("dao.sortPage(start, end, sort) 실행");
+		return datas;
 	}
 	
 	public DeptDTO getDeptId(String id) {

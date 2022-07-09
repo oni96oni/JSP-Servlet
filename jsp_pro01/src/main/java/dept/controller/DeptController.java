@@ -20,7 +20,8 @@ public class DeptController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String search = request.getParameter("search");
 		String page = request.getParameter("page"); // url로 요청받음
-		int count = 5;
+		int count = 5; // 한 페이지에 보여줄 게시글의 수
+		String sort = "";
 		
 		HttpSession session = request.getSession();
 		if(session.getAttribute("pgc") != null) {
@@ -34,23 +35,15 @@ public class DeptController extends HttpServlet {
 		
 		session.setAttribute("pgc", count);
 		
-		String deptId = null, deptName = null, mngId = null, locId = null;
 		if(session.getAttribute("sort") != null) {
-			if(session.getAttribute("sort") == "deptId") {
-				deptId = (String)session.getAttribute("sort");
-			} else if(session.getAttribute("sort") == "deptName") {
-				deptName = (String)session.getAttribute("sort");
-			} else if(session.getAttribute("sort") == "mngId") {
-				mngId = (String)session.getAttribute("sort");
-			} else if(session.getAttribute("sort") == "mngId") {
-				locId = (String)session.getAttribute("sort");
-			}
+			sort = (String) session.getAttribute("sort");
 		}
-		
-		if(deptId != null) {
-			
+		if(request.getParameter("sort") != null) {
+			sort = request.getParameter("sort");
 		}
-/*	//쿠키이용하는 코드 
+		session.setAttribute("sort", sort);
+/*	
+//쿠키이용하는 코드 
 //!! 적용하고나서는 main으로 간뒤에 depts에 가야 초기 쿠키를 전달받을 수 있다. 안그러면 에러 발생
 	
 		Cookie[] cookies = request.getCookies();
@@ -71,18 +64,24 @@ public class DeptController extends HttpServlet {
 		cookie.setPath("/depts");
 		response.addCookie(cookie);
 */		
-		
+		request.setAttribute("sort", sort);
 		request.setAttribute("pgc", count);
 		request.setAttribute("menuLocation", "depts");
 		List<DeptDTO> datas = null;
 		if(search == null) {
-			int pageNum = 1;
+			int pageNum = 1; //초기값 1
 			if(page != null) {
-				if(!page.isEmpty() && page.matches("\\d+")) {
+				if(!page.isEmpty() && page.matches("\\d+")) { //페이지가 비어있지는 않은지, 숫자로구성되어 있는지
 					pageNum = Integer.parseInt(page);
 				}
 			}
-			datas = service.getPage(pageNum, count);
+			if(sort != null) {
+				datas = service.getSortPage(pageNum, count, sort);
+				System.out.println("service.getSortPage(pageNum, count, sort); 실행 체크");
+			} else {
+				datas = service.getPage(pageNum, count);
+			}
+			
 			request.setAttribute("pageList", service.getPageNumberList(count));
 			request.setAttribute("page", pageNum);
 		} else {

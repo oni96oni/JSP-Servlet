@@ -77,7 +77,7 @@
 			</tbody>
 		</table>
 		<c:if test="${not empty pageList}">
-		<c:set var="pageList" value="${pageList}" />
+			<c:set var="pageList" value="${pageList}" />
 			<c:set var="currentPage" value="${page}" />
 				<div class="paging">
 					<ul class="page center">
