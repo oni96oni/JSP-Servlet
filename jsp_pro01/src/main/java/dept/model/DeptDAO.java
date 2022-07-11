@@ -33,15 +33,23 @@ public class DeptDAO {
 		return datas;
 	}
 	
-	public List<DeptDTO> sortPage(int start, int end, String sort) {
-		Map page = new HashMap();
+	public List<DeptDTO> searchPage(int start, int end, String sort) {
+		Map<String,Integer> page = new HashMap<String,Integer>();
 		page.put("start", start);
 		page.put("end", end);
-		page.put("sort", sort);
-		System.out.println("session.selectList실행전" + sort);
-		System.out.println(start+"값과 end값은"+end);
-		List<DeptDTO> datas = session.selectList("deptMapper.deptSelectPageOrder", page);
-		System.out.println("session.selectList(deptMapper.deptSelectPageOrder, page) 실행" + datas.toString());
+		
+		switch(sort) {
+			case "deptId":
+				page.put("sort", 1); break;
+			case "deptName":
+				page.put("sort", 2); break;
+			case "mngId":
+				page.put("sort", 3); break;
+			case "locId":
+				page.put("sort", 4); break;
+		}
+		
+		List<DeptDTO> datas = session.selectList("deptMapper.deptSelectPage", page);
 		return datas;
 	}
 	

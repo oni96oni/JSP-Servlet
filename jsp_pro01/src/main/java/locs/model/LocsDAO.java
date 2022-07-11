@@ -32,6 +32,30 @@ public class LocsDAO {
 		return datas;
 	}
 	
+	public List<LocsDTO> searchPage(int start, int end, String sort) {
+		Map<String, Integer> page = new HashMap<String, Integer>();
+		page.put("start", start);
+		page.put("end", end);
+		
+		switch(sort) {
+			case "locsId":
+				page.put("sort", 1); break;
+			case "strAdd":
+				page.put("sort", 2); break;
+			case "posCode":
+				page.put("sort", 3); break;
+			case "city":
+				page.put("sort", 4); break;
+			case "staPro":
+				page.put("sort", 5); break;
+			case "conId":
+				page.put("sort", 6); break;
+		}
+			List<LocsDTO> datas = session.selectList("locsMapper.locsSelectPage", page);
+			return datas;
+	}
+	
+	
 	public int rowCount() {
 		int count = session.selectOne("locsMapper.locsRowCount");
 		return count;

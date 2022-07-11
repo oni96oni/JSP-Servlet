@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dept.model.DeptDTO;
 import locs.model.LocsDTO;
@@ -24,10 +25,28 @@ public class LocsController extends HttpServlet {
 		String search = request.getParameter("search"); // 사용자가 입력한 데이터 저장
 		String page = request.getParameter("page");
 		int count = 5;
+		String sort = "";
 		
 		if(page == null) {
 			page = "1";
 		}
+		
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute("pgc") != null) {
+//			count = (int)session.getAttribute("pgc");
+			count = Integer.parseInt(session.getAttribute("pgc").toString());
+		}
+		if(request.getParameter("pgc") != null) {
+			count = Integer.parseInt(request.getParameter("pgc"));
+		}
+		if(session.getAttribute("sort") != null) {
+			sort = (String) session.getAttribute("sort");
+		}
+		if(request.getParameter("sort") != null) {
+			sort = request.getParameter("sort");
+		}
+		session.setAttribute("sort", sort);
 		
 		request.setAttribute("menuLocation", "locs");
 		List<LocsDTO> datas = null;
@@ -38,7 +57,7 @@ public class LocsController extends HttpServlet {
 					pageNum = Integer.parseInt(page);
 				}
 			}
-			datas = service.getPage(pageNum, count);
+			datas = service.getPage(pageNum, count, sort);
 			request.setAttribute("pageList", service.getPageNumberList(count));
 			request.setAttribute("page", pageNum);
 		} else {

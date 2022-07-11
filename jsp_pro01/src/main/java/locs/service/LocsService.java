@@ -41,6 +41,16 @@ public class LocsService {
 		return datas;
 	}
 	
+	public List<LocsDTO> getPage(int pageNumber, int count, String sort) {
+		int start = (pageNumber - 1) * count + 1;
+		int end = start + count - 1;
+		
+		dao = new LocsDAO();
+		List<LocsDTO> datas = dao.searchPage(start, end, sort);
+		dao.close();
+		return datas;
+	}
+	
 	public List<Integer> getPageNumberList() {
 		dao = new LocsDAO();
 		int rowCount = dao.rowCount();

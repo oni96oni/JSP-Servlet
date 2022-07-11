@@ -26,6 +26,9 @@
 					</li>
 				</ul>
 			</li>
+			<li class="nav-item <%=menuLocation.equals("emps") ? "active" : "" %>">
+				<a class="nav-link" href="./emps">직원</a>
+			</li>
 			<li class="nav-item <%=menuLocation.equals("depts") ? "active" : "" %>">
 				<a class="nav-link" href="./depts">부서</a>
 			</li>

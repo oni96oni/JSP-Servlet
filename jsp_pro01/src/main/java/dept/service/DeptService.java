@@ -40,6 +40,16 @@ public class DeptService {
 		return datas;
 	}
 	
+	public List<DeptDTO> getPage(int pageNumber, int count, String sort) {
+		int start = (pageNumber - 1) * count + 1;
+		int end = start + count - 1;
+		
+		dao = new DeptDAO();
+		List<DeptDTO> datas = dao.searchPage(start, end, sort);
+		dao.close();
+		return datas;
+	}
+	
 	public List<Integer> getPageNumberList() {
 		dao = new DeptDAO();
 		int rowCount = dao.rowCount();
@@ -64,30 +74,6 @@ public class DeptService {
 			pageList.add(n + 1);
 		}
 		return pageList;
-	}
-	
-	public List<DeptDTO> getSortPage(int pageNumber, int count, String sort) {
-		int start = (pageNumber - 1) * count + 1;
-		int end = start + count - 1;
-		
-		dao = new DeptDAO();
-		
-		System.out.println("getSortPage" + sort);
-//		if(sort.equals("deptId")) {
-//			sort="DEPARTMENT_ID";
-//		} else if (sort.equals("deptName")) {
-//			sort="DEPARTMENT_NAME";
-//		} else if (sort.equals("mngId")) {
-//			sort="MANAGER_ID";
-//		} else {
-//			sort="LOCATION_ID";
-//		}
-		System.out.println("getSortPage" + sort);
-		List<DeptDTO> datas = dao.sortPage(start, end, sort);
-		System.out.println("dao.sortPage(start, end, sort) 실행");
-		dao.close();
-		
-		return datas;
 	}
 	
 	public DeptDTO getDeptId(String id) {

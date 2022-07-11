@@ -13,25 +13,32 @@
 	<select id="deptSelectPage" parameterType="map" resultType="deptDto">
 		SELECT *
 		  FROM (SELECT ROWNUM AS RN
-		             , DEPARTMENT_ID AS deptId
-		             , DEPARTMENT_NAME AS deptName
-		             , MANAGER_ID AS mngId
-		             , LOCATION_ID AS locId
-		          FROM DEPARTMENTS
+		             , deptId
+		             , deptName
+		             , mngId
+		             , locId
+		          FROM (SELECT DEPARTMENT_ID AS deptId
+		          			 , DEPARTMENT_NAME AS deptName
+		          			 , MANAGER_ID AS mngId
+		          			 , LOCATION_ID AS locId
+		          		  FROM DEPARTMENTS
+		          		  <choose>
+		          		  	<when test="sort == 1">
+		          		  		ORDER BY deptId DESC
+		          		  	</when>
+		          		  	<when test="sort == 2">
+		          		  		ORDER BY deptName DESC
+		          		  	</when>
+		          		  	<when test="sort == 3">
+		          		  		ORDER BY mngId DESC
+		          		  	</when>
+		          		  	<when test="sort == 4">
+		          		  		ORDER BY locId DESC
+		          		  	</when>
+		          		  </choose>
+		          ) 
 		       )
 		 WHERE RN BETWEEN #{start} AND #{end}
-	</select>
-	<select id="deptSelectPageOrder" parameterType="map" resultType="deptDto">
-		SELECT *
-		  FROM (SELECT ROWNUM AS RN
-		             , DEPARTMENT_ID AS deptId
-		             , DEPARTMENT_NAME AS deptName
-		             , MANAGER_ID AS mngId
-		             , LOCATION_ID AS locId
-		          FROM DEPARTMENTS
-		       )
-		 WHERE RN BETWEEN #{start} AND #{end}
-		 ORDER BY #{sort}
 	</select>
 	<select id="deptRowCount" resultType="_int">
 		SELECT COUNT(*) FROM DEPARTMENTS

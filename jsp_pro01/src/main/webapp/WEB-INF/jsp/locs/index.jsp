@@ -43,12 +43,18 @@
 			</colgroup>
 			<thead>
 				<tr>
-					<th onclick="location.href='./locs?sort=locsId'">Location ID</th>
-					<th onclick="location.href='./locs?sort=strAdd'">Street Address</th>
-					<th onclick="location.href='./locs?sort=posCode'">Postal Code</th>
-					<th onclick="location.href='./locs?sort=city'">City</th>
-					<th onclick="location.href='./locs?sort=staPro'">State Province</th>
-					<th onclick="location.href='./locs?sort=conId'">Country Id</th>
+					<th class="${sort == 'locsId' ? 'sort-desc' : ''}"
+					onclick="location.href='./locs?page=${page}&sort=locsId'">Location ID</th>
+					<th class="${sort == 'strAdd' ? 'sort-desc' : ''}"
+					onclick="location.href='./locs?page=${page}&sort=strAdd'">Street Address</th>
+					<th class="${sort == 'posCode' ? 'sort-desc' : ''}"
+					onclick="location.href='./locs?page=${page}&sort=posCode'">Postal Code</th>
+					<th class="${sort == 'city' ? 'sort-desc' : ''}"
+					onclick="location.href='./locs?page=${page}&sort=city'">City</th>
+					<th class="${sort == 'staPro' ? 'sort-desc' : ''}"
+					onclick="location.href='./locs?page=${page}&sort=staPro'">State Province</th>
+					<th class="${sort == 'conId' ? 'sort-desc' : ''}"
+					onclick="location.href='./locs?page=${page}&sort=conId'">Country Id</th>
 					<th class="border-hidden-right"></th>
 				</tr>
 			</thead>
