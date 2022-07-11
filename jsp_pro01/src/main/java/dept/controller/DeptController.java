@@ -35,12 +35,15 @@ public class DeptController extends HttpServlet {
 		
 		session.setAttribute("pgc", count);
 		
+		System.out.println(sort);
 		if(session.getAttribute("sort") != null) {
 			sort = (String) session.getAttribute("sort");
 		}
+		System.out.println(sort);
 		if(request.getParameter("sort") != null) {
 			sort = request.getParameter("sort");
 		}
+		System.out.println(sort);
 		session.setAttribute("sort", sort);
 /*	
 //쿠키이용하는 코드 
@@ -63,6 +66,7 @@ public class DeptController extends HttpServlet {
 		cookie.setMaxAge(30);
 		cookie.setPath("/depts");
 		response.addCookie(cookie);
+		
 */		
 		request.setAttribute("sort", sort);
 		request.setAttribute("pgc", count);
@@ -76,6 +80,7 @@ public class DeptController extends HttpServlet {
 				}
 			}
 			if(sort != null) {
+				System.out.println("sort가 null이 아닐때 실행을하는데? 지금 빈문자열이 들어온다." + sort);
 				datas = service.getSortPage(pageNum, count, sort);
 				System.out.println("service.getSortPage(pageNum, count, sort); 실행 체크");
 			} else {

@@ -38,8 +38,10 @@ public class DeptDAO {
 		page.put("start", start);
 		page.put("end", end);
 		page.put("sort", sort);
+		System.out.println("session.selectList실행전" + sort);
+		System.out.println(start+"값과 end값은"+end);
 		List<DeptDTO> datas = session.selectList("deptMapper.deptSelectPageOrder", page);
-		System.out.println("session.selectList(deptMapper.deptSelectPageOrder, page) 실행");
+		System.out.println("session.selectList(deptMapper.deptSelectPageOrder, page) 실행" + datas.toString());
 		return datas;
 	}
 	

@@ -69,18 +69,24 @@ public class DeptService {
 	public List<DeptDTO> getSortPage(int pageNumber, int count, String sort) {
 		int start = (pageNumber - 1) * count + 1;
 		int end = start + count - 1;
-		String order = "";
-		if(sort == "deptId") {
-			sort="DEPARTMENT_ID";
-		} else if (sort == "deptName") {
-			sort="DEPARTMENT_NAME";
-		} else if (sort == "deptName") {
-			sort="MANAGER_ID";
-		} else {
-			sort="LOCATION_ID";
-		}
+		
+		dao = new DeptDAO();
+		
+		System.out.println("getSortPage" + sort);
+//		if(sort.equals("deptId")) {
+//			sort="DEPARTMENT_ID";
+//		} else if (sort.equals("deptName")) {
+//			sort="DEPARTMENT_NAME";
+//		} else if (sort.equals("mngId")) {
+//			sort="MANAGER_ID";
+//		} else {
+//			sort="LOCATION_ID";
+//		}
+		System.out.println("getSortPage" + sort);
 		List<DeptDTO> datas = dao.sortPage(start, end, sort);
 		System.out.println("dao.sortPage(start, end, sort) 실행");
+		dao.close();
+		
 		return datas;
 	}
 	
