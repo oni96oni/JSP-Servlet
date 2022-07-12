@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/required.js"></script>
 </head>
 <body>
-	<%@ include file="/WEB-INF/jsp/module/navigation.jsp" %>
+	<%@ include file="../module/navigation.jsp" %>
 	<section class="container">
 		<c:url var="myInfoUpdateUrl" value="/myinfo" />
 		<form class="large-form" action="${myInfoUpdateUrl}" method="post">
