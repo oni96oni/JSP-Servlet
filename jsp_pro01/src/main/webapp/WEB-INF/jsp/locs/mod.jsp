@@ -12,7 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/paging.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/required.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/table.css">
-	<script type="text/javascript" src="<%=request.getContextPath() %>/static/js/required.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/required.js"></script>
 </head>
 <body>
 	<h1>지역 수정 화면</h1>

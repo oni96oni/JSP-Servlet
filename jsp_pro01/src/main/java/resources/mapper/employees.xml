@@ -140,8 +140,27 @@
 		     , LOCATION_ID = #{locId}
 		 WHERE DEPARTMENT_ID = #{deptId}
 	</update>
+	<update id="updateEmp" parameterType="empsDto">
+		UPDATE EMPLOYEES
+		   SET EMAIL = SUBSTR(#{email}, 1, INSTR(#{email}, '@emp.com')-1)
+		 WHERE EMPLOYEE_ID = #{empId}
+	</update>
+	<update id="updateEmpDetail" parameterType="empsDetailDto">
+		UPDATE EMPLOYEES
+		   SET PHONE_NUMBER = #{phone}
+		 WHERE EMPLOYEE_ID = #{empId}
+	</update>
 	<delete id="empsDelete">
 		DELETE FROM EMPLOYEES
 		 WHERE EMPLOYEE_ID = #{id}
 	</delete>
+	<select id="selectEmpDetail" parameterType="_int" resultType="empsDetailDto">
+		SELECT EMPLOYEE_ID AS empId
+		     , HIRE_DATE AS hireDate
+		     , PHONE_NUMBER AS phone
+		     , SALARY AS salary
+		     , COMMISSION_PCT AS commission
+		  FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
 </mapper>

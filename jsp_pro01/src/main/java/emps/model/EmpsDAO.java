@@ -67,6 +67,12 @@ public class EmpsDAO {
 		return count;
 	}
 	
+	public EmpsDetailDTO selectEmpDetail(int empId) {
+		String mapId = String.format(mapper, "selectEmpDetail");
+		EmpsDetailDTO data = session.selectOne(mapId, empId);
+		return data;
+	}
+	
 	public EmpsDTO searchEmpsId(int id) {
 		EmpsDTO data = session.selectOne("empsMapper.empsSelectId", id);
 		return data;
@@ -81,9 +87,18 @@ public class EmpsDAO {
 		return false;
 	}
 	
-	public boolean updateEmps(EmpsDTO data) {
-		// 업데이트 용 맵퍼와 SQL 구문을 작성하여 이 메서드가 동작하게 한다.
-		int result = session.update("empsMapper.empsUpdate", data);
+	public boolean updateEmp(EmpsDTO empsData) {
+		String mapId = String.format(mapper, "updateEmp");
+		int result = session.update(mapId, empsData);
+		if(result == 1) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean updateEmpDetail(EmpsDetailDTO empsDetailData) {
+		String mapId = String.format(mapper, "updateEmpDetail");
+		int result = session.update(mapId, empsDetailData);
 		if(result == 1) {
 			return true;
 		}
@@ -166,5 +181,7 @@ public class EmpsDAO {
 		}
 		return false;
 	}
+
+	
 
 }

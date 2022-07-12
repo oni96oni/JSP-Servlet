@@ -8,6 +8,7 @@ import dept.model.DeptDTO;
 import dept.service.DEPT_SERVICE_STATUS;
 import emps.model.EmpsDAO;
 import emps.model.EmpsDTO;
+import emps.model.EmpsDetailDTO;
 
 public class EmpsService {
 	
@@ -101,6 +102,13 @@ public class EmpsService {
 		return data;
 	}
 
+	public EmpsDetailDTO getEmpDetail(int empId) {
+		EmpsDAO dao = new EmpsDAO();
+		EmpsDetailDTO data = dao.selectEmpDetail(empId);
+		dao.close();
+		return data;
+	}
+	
 	public EMPS_SERVICE_STATUS addEmps(EmpsDTO data) {
 		dao = new EmpsDAO();
 		EMPS_SERVICE_STATUS status = EMPS_SERVICE_STATUS.SUCCESS;
@@ -183,7 +191,7 @@ public class EmpsService {
 		
 		switch(status) {
 			case SUCCESS:
-				if(dao.updateEmps(data)) {
+				if(dao.updateEmp(data)) {
 					dao.commit();
 				} else {
 					status = EMPS_SERVICE_STATUS.FAILED;
@@ -216,4 +224,22 @@ public class EmpsService {
 		dao.close();
 		return status;
 	}
+
+	public boolean setEmp(EmpsDTO empsData, EmpsDetailDTO empsDetailData) {
+		dao = new EmpsDAO();
+		
+		boolean res1 = dao.updateEmp(empsData);
+		boolean res2 = dao.updateEmpDetail(empsDetailData);
+		
+		if(res1 && res2 ) {
+			dao.commit();
+			dao.close();
+			return true;
+		} else {
+			dao.rollback();
+			dao.close();
+			return false;
+		}
+	}
+	
 }
