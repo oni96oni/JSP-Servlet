@@ -119,7 +119,7 @@ public class EmpsDAO {
 		return false;
 	}
 
-	public boolean DeptName(String deptName) {
+	public boolean existDeptName(String deptName) {
 		int result = session.selectOne("empsMapper.existDeptName", deptName);
 		if(result == 1) {
 			return true;

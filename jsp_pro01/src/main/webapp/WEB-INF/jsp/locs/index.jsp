@@ -29,6 +29,12 @@
 				<div class="input-form form-right">
 					<input class="input-text" type="text" name="search">
 					<button class="btn btn-outline" type="submit">조회</button>
+					<select class="select-form" onchange="location.href='./locs?pgc=' + this.value">
+						<option value="5" ${pgc == 5 ? 'selected' : '' }>5 개</option>
+						<option value="10" ${pgc == 10 ? 'selected' : '' }>10 개</option>
+						<option value="15" ${pgc == 15 ? 'selected' : '' }>15 개</option>
+						<option value="20" ${pgc == 20 ? 'selected' : '' }>20 개</option>
+					</select>
 				</div>
 			</form>
 		</div>
@@ -39,6 +45,7 @@
 				<col class="col-120">
 				<col class="col-120">
 				<col class="col-180">
+				<col class="col-120">
 				<col class="col-120">
 			</colgroup>
 			<thead>
@@ -69,10 +76,10 @@
 							<td>${data.staPro}</td>
 							<td>${data.conId}</td>
 							<td class="border-hidden-right">
-								<button class="btn btn-icon" type="button" onclick="location.href='./depts/mod?id=${data.locsId}'">
+								<button class="btn btn-icon" type="button" onclick="location.href='./locs/mod?id=${data.locsId}'">
 									<span class="material-symbols-outlined">edit</span>
 								</button>
-								<button class="btn btn-icon" type="button" onclick="location.href='./depts/del?id=${data.locsId}'">
+								<button class="btn btn-icon" type="button" onclick="location.href='./locs/del?id=${data.locsId}'">
 									<span class="material-symbols-outlined">delete</span>
 								</button>
 							</td>
@@ -82,7 +89,7 @@
 			</tbody>
 		</table>
 		<c:if test="${not empty pageList}">
-			<c:set var="pageList" value="${pageList}"/>
+			<c:set var="pageList" value="${pageList}" />
 			<c:set var="currentPage" value="${page}" />
 			<div class="paging">
 				<ul class="page center">

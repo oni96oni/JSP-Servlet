@@ -19,7 +19,6 @@
 </head>
 <body>
 	<h1>직원 추가 화면</h1>
-	
 	<section class="container">
 		<form class="small-form" action="./add" method="post">
 			<div class="input-form wide">

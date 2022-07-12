@@ -27,10 +27,6 @@ public class LocsController extends HttpServlet {
 		int count = 5;
 		String sort = "";
 		
-		if(page == null) {
-			page = "1";
-		}
-		
 		HttpSession session = request.getSession();
 		
 		if(session.getAttribute("pgc") != null) {
@@ -46,8 +42,10 @@ public class LocsController extends HttpServlet {
 		if(request.getParameter("sort") != null) {
 			sort = request.getParameter("sort");
 		}
+		session.setAttribute("pgc", count);
 		session.setAttribute("sort", sort);
 		
+		request.setAttribute("pgc", count);
 		request.setAttribute("menuLocation", "locs");
 		List<LocsDTO> datas = null;
 		if(search == null) {

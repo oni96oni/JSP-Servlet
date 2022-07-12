@@ -28,19 +28,16 @@ public class DeptController extends HttpServlet {
 //			count = (int)session.getAttribute("pgc");
 			count = Integer.parseInt(session.getAttribute("pgc").toString());
 		}
-		
 		if(request.getParameter("pgc") != null) {
 			count = Integer.parseInt(request.getParameter("pgc"));
 		}
-		
-		session.setAttribute("pgc", count);
-		
 		if(session.getAttribute("sort") != null) {
 			sort = (String) session.getAttribute("sort");
 		}
 		if(request.getParameter("sort") != null) {
 			sort = request.getParameter("sort");
 		}
+		session.setAttribute("pgc", count);
 		session.setAttribute("sort", sort); // 세션정보를 항상 업데이트
 /*	
 //쿠키이용하는 코드 
@@ -76,7 +73,6 @@ public class DeptController extends HttpServlet {
 				}
 			}
 			datas = service.getPage(pageNum, count, sort);
-			
 			request.setAttribute("pageList", service.getPageNumberList(count));
 			request.setAttribute("page", pageNum);
 		} else {

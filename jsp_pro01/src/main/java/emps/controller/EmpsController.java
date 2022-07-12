@@ -44,12 +44,9 @@ public class EmpsController extends HttpServlet{
 		if(session.getAttribute("pgc") != null) {
 			count = Integer.parseInt(session.getAttribute("pgc").toString());
 		}
-		
 		if(request.getParameter("pgc") != null) {
 			count = Integer.parseInt(request.getParameter("pgc"));
 		}
-		session.setAttribute("pgc", count);
-		
 		if(session.getAttribute("sort") != null) {
 			sort = (String) session.getAttribute("sort");
 		}
@@ -57,6 +54,7 @@ public class EmpsController extends HttpServlet{
 			sort = request.getParameter("sort");
 		}
 		
+		session.setAttribute("pgc", count);
 		session.setAttribute("sort", sort);
 		request.setAttribute("pgc", count);
 		request.setAttribute("menuLocation", "emps");
@@ -69,7 +67,6 @@ public class EmpsController extends HttpServlet{
 				}
 			}
 			datas = service.getPage(pageNum, count, sort);
-			
 			request.setAttribute("pageList", service.getPageNumberList(count));
 			request.setAttribute("page", pageNum);
 		} else {

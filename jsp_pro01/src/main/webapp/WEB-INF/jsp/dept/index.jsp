@@ -91,7 +91,7 @@
 					<ul class="page center">
 						<c:if test="${currentPage - 1 > 0 }">
 							<li class="page-item">
-							<a class="page-link" href="./depts?page=${currentPage - 1}">Prev</a>
+								<a class="page-link" href="./depts?page=${currentPage - 1}">Prev</a>
 							</li>
 						</c:if>
 						<c:set var="i" value="${currentPage - 1}"/>

@@ -106,25 +106,25 @@ public class EmpsService {
 		EMPS_SERVICE_STATUS status = EMPS_SERVICE_STATUS.SUCCESS;
 		
 		if(!_existEmpId(data.getEmpId())) {
-			status = EMPS_SERVICE_STATUS.LOC_ID_NOT_EXISTS;
+			status = EMPS_SERVICE_STATUS.EMP_ID_DUPLICATED;
 		}
 		if(!_existEmpName(data.getEmpName())) {
-			status = EMPS_SERVICE_STATUS.LOC_ID_NOT_EXISTS;
+			status = EMPS_SERVICE_STATUS.EMP_NAME_NOT_EXISTS;
 		}
 		if(!_existEmail(data.getEmail())) {
-			status = EMPS_SERVICE_STATUS.LOC_ID_NOT_EXISTS;
+			status = EMPS_SERVICE_STATUS.EMP_EMAIL_NOT_EXISTS;
 		}
 		if(!_existJobName(data.getJobName())) {
-			status = EMPS_SERVICE_STATUS.LOC_ID_NOT_EXISTS;
+			status = EMPS_SERVICE_STATUS.JOB_NAME_NOT_EXISTS;
 		}
 		if(!_existJobId(data.getJobId())) {
-			status = EMPS_SERVICE_STATUS.LOC_ID_NOT_EXISTS;
+			status = EMPS_SERVICE_STATUS.JOB_ID_NOT_EXISTS;
 		}
 		if(!_existDeptName(data.getDeptName())) {
-			status = EMPS_SERVICE_STATUS.MNG_ID_NOT_EXISTS;
+			status = EMPS_SERVICE_STATUS.DEPT_NAME_NOT_EXISTS;
 		}
 		if(!_existDeptId(data.getDeptId())) {
-			status = EMPS_SERVICE_STATUS.DEPT_ID_DUPLICATED;
+			status = EMPS_SERVICE_STATUS.DEPT_ID_NOT_EXISTS;
 		}
 		
 		switch(status) {
@@ -146,7 +146,7 @@ public class EmpsService {
 	}
 
 	private boolean _existDeptName(String deptName) {
-		return dao.DeptName(deptName);
+		return dao.existDeptName(deptName);
 	}
 
 	private boolean _existJobId(String jobId) {
@@ -177,11 +177,8 @@ public class EmpsService {
 		dao = new EmpsDAO();
 		EMPS_SERVICE_STATUS status = EMPS_SERVICE_STATUS.SUCCESS;
 		
-		if(!_existManager(data.getMngId())) {
-			status = EMPS_SERVICE_STATUS.MNG_ID_NOT_EXISTS;
-		}
-		if(!_existLocation(data.getLocId())) {
-			status = EMPS_SERVICE_STATUS.LOC_ID_NOT_EXISTS;
+		if(!_existEmpId(data.getEmpId())) {
+			status = EMPS_SERVICE_STATUS.EMP_ID_NOT_EXISTS;
 		}
 		
 		switch(status) {
@@ -205,7 +202,7 @@ public class EmpsService {
 		dao = new EmpsDAO();
 		
 		if(_getEmpsId(Integer.parseInt(id)) == null) {
-			status = EMPS_SERVICE_STATUS.DEPT_ID_NOT_EXISTS;
+			status = EMPS_SERVICE_STATUS.EMP_ID_NOT_EXISTS;
 		}
 		
 		boolean result = dao.deleteEmps(Integer.parseInt(id));

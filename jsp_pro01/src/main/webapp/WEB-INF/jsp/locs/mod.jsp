@@ -6,8 +6,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>지역 수정</title>
-	<link herf="<%=request.getContextPath() %>/static/css/default.css">
-	<script src="<%=request.getContextPath() %>/static/js/default.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/default.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/form.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/navigation.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/paging.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/required.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/table.css">
+	<script type="text/javascript" src="<%=request.getContextPath() %>/static/js/required.js"></script>
 </head>
 <body>
 	<h1>지역 수정 화면</h1>
