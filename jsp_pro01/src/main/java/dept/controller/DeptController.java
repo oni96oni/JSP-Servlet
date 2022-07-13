@@ -24,6 +24,7 @@ public class DeptController extends HttpServlet {
 		String sort = "";
 		
 		HttpSession session = request.getSession();
+		
 		if(session.getAttribute("pgc") != null) {
 //			count = (int)session.getAttribute("pgc");
 			count = Integer.parseInt(session.getAttribute("pgc").toString());

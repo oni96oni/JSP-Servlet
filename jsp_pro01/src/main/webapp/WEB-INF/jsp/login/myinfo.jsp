@@ -16,13 +16,33 @@
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/table.css">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/required.js"></script>
 </head>
+<script type="text/javascript">
+window.onload = function() {
+	previewImg.addEventListener("click", function(e) {
+		imgSelect.click();
+	});
+	
+	imgSelect.addEventListener("change", showImagePreview);
+}
+
+function showImagePreview(e) {
+	var file = e.target.files[0];
+	var imgUrl = URL.createObjectURL(file);
+	previewImg.src = imgUrl;
+}
+</script>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
 	<section class="container">
 		<c:url var="myInfoUpdateUrl" value="/myinfo" />
-		<form class="large-form" action="${myInfoUpdateUrl}" method="post">
+		<form class="large-form" action="${myInfoUpdateUrl}" method="post" enctype="multipart/form-data">
 			<div class="image-form left">
-				<img class="image-360" alt="여기에는 증명 사진이 배치됩니다." src="${imagePath}">
+				<img id="previewImg" class="image-360" alt="여기에는 증명 사진이 배치됩니다." src="${imagePath}">
+				<br>
+				<input id="imgSelect" type="file" name="uploadImg" value="이미지 선택" accept="image/png">
+				<c:if test="${not empty imageError}">
+					<label class="input-label-error">${imageError}</label>
+				</c:if>
 			</div>
 			<div class="input-form inline">
 				<div class="input-form">

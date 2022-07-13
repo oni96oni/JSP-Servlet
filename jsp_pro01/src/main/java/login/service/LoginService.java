@@ -17,7 +17,7 @@ public class LoginService {
 		mapData.put("firstName", "");
 		mapData.put("lastName", "");
 		
-		String fullName[] = empName.split(" ");
+		String fullName[] = empName.split(" ", 2);
 		if(fullName.length == 2) {
 			mapData.put("firstName", fullName[0]);
 			mapData.put("lastName", fullName[1]);

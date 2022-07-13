@@ -29,18 +29,12 @@ public class EmpsController extends HttpServlet{
 		int count = 5; // 한 페이지에 보여줄 게시글의 수
 		String sort = "";
 		
-		Enumeration params = request.getParameterNames();
-		while(params.hasMoreElements()) {
-		  String name = (String) params.nextElement();
-		  System.out.print(name + " : " + request.getParameter(name) + "     "); 
-		}
-		System.out.println();
-		
 		if(page == null) {
 			page = "1";
 		}
 		
 		HttpSession session = request.getSession();
+		
 		if(session.getAttribute("pgc") != null) {
 			count = Integer.parseInt(session.getAttribute("pgc").toString());
 		}
