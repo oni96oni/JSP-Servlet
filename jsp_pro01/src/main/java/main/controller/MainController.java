@@ -51,4 +51,4 @@ public class MainController extends HttpServlet {
 	servlet이 GET,POST요청인지 구분한다.
 	
 	
- */
+*/

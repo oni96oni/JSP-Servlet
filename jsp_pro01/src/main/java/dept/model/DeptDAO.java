@@ -117,5 +117,4 @@ public class DeptDAO {
 	public void close() {
 		session.close();
 	}
-
 }

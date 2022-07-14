@@ -84,6 +84,10 @@
 	color: #FF0063
 }
 
+.input-label-ok {
+	color: #66BFBF;
+}
+
 .btn {
 	padding: 0.4rem 0.8rem;
 	border: none;
