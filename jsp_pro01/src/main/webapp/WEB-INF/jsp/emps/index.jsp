@@ -11,13 +11,7 @@
 	<title>Insert title here</title>
 	<meta charset="UTF-8">
 	<title>직원 조회 결과</title>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/default.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/form.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/navigation.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/paging.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/required.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/table.css">
-	<script type="text/javascript" src="<%=request.getContextPath() %>/static/js/required.js"></script>
+	<%@ include file="../module/head.jsp" %>
 </head>
 <body>
 <%@ include file="/WEB-INF/jsp/module/navigation.jsp" %>
@@ -72,7 +66,7 @@
 			<c:if test="${not empty datas}">
 				<c:forEach items="${datas}" var="data">
 					<tr>
-						<td>${data.empId}</td>
+						<td><a href="./empinfo?empId=${data.empId}">${data.empId}</a></td>
 						<td>${data.empName}</td>
 						<td>${data.email}</td>
 						<td>${data.jobName}</td>
@@ -90,31 +84,7 @@
 			</c:if>
 			</tbody>
 		</table>
-		<c:if test="${not empty pageList}">
-			<c:set var="pageList" value="${pageList}" />
-			<c:set var="currentPage" value="${page}" />
-				<div class="paging">
-					<ul class="page center">
-						<c:if test="${currentPage - 1 > 0 }">
-							<li class="page-item">
-							<a class="page-link" href="./emps?page=${currentPage - 1}">Prev</a>
-							</li>
-						</c:if>
-						<c:set var="i" value="${currentPage - 1}"/>
-						<c:set var="maxPage" value="${i+5 > pageList.size() ? pageList.size() : i + 5}" />
-						<c:forEach begin="${i}" end="${maxPage - 1}" var="num">
-							<li class="page-item">
-								<a class="page-link" href="./emps?page=${pageList.get(num)}">${pageList.get(num)}></a>
-							</li>
-						</c:forEach>
-						<c:if test="${currentPage + 1 <= pageList.size()}">
-							<li class="page-item">
-								<a class="page-link" href="./emps?page=${currentPage + 1}">Next</a>
-							</li>
-						</c:if>
-					</ul>
-				</div>
-		</c:if>
 	</section>
+	<%@ include file="/WEB-INF/jsp/module/paging.jsp" %>
 </body>
 </html>

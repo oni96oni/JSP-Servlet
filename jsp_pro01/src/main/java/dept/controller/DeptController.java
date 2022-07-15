@@ -22,6 +22,7 @@ public class DeptController extends HttpServlet {
 		String page = request.getParameter("page"); // url로 요청받음
 		int count = 5; // 한 페이지에 보여줄 게시글의 수
 		String sort = "";
+		String whatPage = "depts";
 		
 		HttpSession session = request.getSession();
 		
@@ -40,6 +41,7 @@ public class DeptController extends HttpServlet {
 		}
 		session.setAttribute("pgc", count);
 		session.setAttribute("sort", sort); // 세션정보를 항상 업데이트
+		session.setAttribute("whatPage", whatPage);
 /*	
 //쿠키이용하는 코드 
 //!! 적용하고나서는 main으로 간뒤에 depts에 가야 초기 쿠키를 전달받을 수 있다. 안그러면 에러 발생

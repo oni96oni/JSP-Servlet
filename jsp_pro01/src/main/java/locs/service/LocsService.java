@@ -96,6 +96,11 @@ public class LocsService {
 		return data;
 	}
 	
+	public boolean existsCountry(String conId) {
+		dao = new LocsDAO();
+		return _existCountry(conId);
+	}
+	
 	private LocsDTO _getLocsId(int id) {
 		LocsDTO data = dao.searchLocsId(id);
 		return data;
@@ -183,4 +188,5 @@ public class LocsService {
 		dao.close();
 		return status;
 	}
+
 }

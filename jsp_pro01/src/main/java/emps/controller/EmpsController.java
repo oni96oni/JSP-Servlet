@@ -28,6 +28,7 @@ public class EmpsController extends HttpServlet{
 		String page = request.getParameter("page"); // url로 요청받음
 		int count = 5; // 한 페이지에 보여줄 게시글의 수
 		String sort = "";
+		String whatPage = "emps";
 		
 		if(page == null) {
 			page = "1";
@@ -50,6 +51,8 @@ public class EmpsController extends HttpServlet{
 		
 		session.setAttribute("pgc", count);
 		session.setAttribute("sort", sort);
+		session.setAttribute("whatPage", whatPage);
+		
 		request.setAttribute("pgc", count);
 		request.setAttribute("menuLocation", "emps");
 		List<EmpsDTO> datas = null;

@@ -98,7 +98,7 @@
 				  JOIN DEPARTMENTS D 
 				  	ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
 				  	)
-		WHERE EMPLOYEE_ID = #{id}
+		WHERE empId = #{id}
 	</select>
 	<select id="existDeptId" resultType="_int">
 		SELECT COUNT(*) FROM EMPLOYEES

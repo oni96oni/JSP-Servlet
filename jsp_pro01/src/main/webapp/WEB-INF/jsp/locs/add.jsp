@@ -9,44 +9,78 @@
 <head>
 	<meta charset="UTF-8">
 	<title>지역 추가</title>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/default.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/form.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/navigation.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/paging.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/required.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/table.css">
-	<script type="text/javascript" src="<%=request.getContextPath() %>/static/js/required.js"></script>
+	<%@ include file="../module/head.jsp" %>
 </head>
-<body>
-	<h1>지역 추가 화면</h1>
-<%-- 
-	<%	
-		int locsId = 0;
-		String strAdd = "", posCode = "", city = "", staPro = "", conId="";
-		if(request.getAttribute("error") != null) {
-			LocsDTO data = (LocsDTO) request.getAttribute("data");
-			locsId = data.getLocsId();
-			strAdd = String.valueOf(data.getStrAdd());
-			posCode = String.valueOf(data.getPosCode());
-			city = String.valueOf(data.getCity());
-			staPro = String.valueOf(data.getStaPro());
-			conId = String.valueOf(data.getConId());
-	%>
-			<script type="text/javascript">
-				alert("<%=request.getAttribute("errorMsg") %>");
-			</script>
-	<%
+<script type="text/javascript">
+function dupCheck(value) {
+	$.ajax({
+		type: "get",
+		url: "/ajax/dupCheck",
+		data: {
+			locsId: value
+		},
+		dataType: "json",
+		success: function(data, status) {
+			var form = document.forms[0];
+			if(data.errCode === "duplicate") {
+				var label = document.createElement("label");
+				label.setAttribute("class", "input-label-error");
+				label.innerText = data.errMessage;
+				
+				if(form.locsId.nextElementSibling === null) {
+					form.locsId.after(label);
+				}
+			} else {
+				if(form.locsId.nextElementSibling !== null) {
+					form.locsId.nextElementSibling.remove();
+				}
+			}
 		}
-	%>
---%>
+	});
+}
+
+function existsCheck(name, value) {
+	$.ajax({
+		type: "get",
+		url: "/ajax/existsCheck",
+		data: {
+			name: name,
+			value: value
+		},
+		dataType: "json",
+		success: function(data, status) {
+			var form = document.forms[0];
+			if(data.errCode === "notExists") {
+				if(form[name].nextElementSibling === null) {					
+					var label = document.createElement("label");
+					label.setAttribute("class", "input-label-error");
+					label.innerText = data.errMessage;
+					form[name].after(label);
+				} else {
+					form[name].nextElementSibling.setAttribute("class", "input-label-error");
+					form[name].nextElementSibling.innerText = data.errMessage;
+				}
+			} else if(data.errCode == "exists") {
+				if(form[name].nextElementSibling === null) {	
+					var label = document.createElement("label");
+					label.setAttribute("class", "input-label-ok");
+					label.innerText = data.errMessage;
+					form[name].after(label);
+				} else {
+					form[name].nextElementSibling.setAttribute("class", "input-label-ok");
+					form[name].nextElementSibling.innerText = data.errMessage;
+				}
+			}
+		}
+	});
+}
+</script>
+<body>
 	<section class="container">
 		<form class="small-form" action="./add" method="post">
 			<div class="input-form wide">
 				<label class="input-label">지역ID</label>
-				<input class="input-text" type="text" name="locsId" value="${data.locsId}">
-				<c:if test="${errorCode eq 'locsId'}">
-					<label class="input-label-error">${errorMsg}</label>
-				</c:if>
+				<input class="input-text" type="text" name="locsId" onchange="dupCheck(this.value);" value="${data.locsId}">
 			</div>
 			<div class="input-form wide">
 				<label class="input-label">지역 주소</label>
@@ -78,10 +112,7 @@
 			</div>
 			<div class="input-form wide">
 				<label class="input-label">국가ID</label>
-				<input class="input-text" type="text" name="conId" value="${data.conId}">
-				<c:if test="${errorCode eq 'conId'}">
-					<label class="input-label-error">${errorMsg}</label>
-				</c:if>
+				<input class="input-text" type="text" name="conId" onchange="existsCheck(this.name, this.value);" value="${data.conId}">
 			</div>
 			<div class="input-form wide form-right">
 				<button class="btn btn-ouitline btn-ok" type="submit">저장</button>

@@ -9,24 +9,43 @@
 <head>
 	<meta charset="UTF-8">
 	<title>부서 추가</title>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/default.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/form.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/navigation.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/paging.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/required.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/table.css">
-	<script type="text/javascript" src="<%=request.getContextPath() %>/static/js/required.js"></script>
+	<%@ include file="../module/head.jsp" %>
 </head>
+<script type="text/javascript">
+function dupCheck(value) {
+	$.ajax({
+		type: "get",
+		url: "/ajax/dupCheck",
+		data: {
+			empId: value
+		},
+		dataType: "json",
+		success: function(data, status) {
+			var form = document.forms[0];
+			if(data.errCode === "duplicate") {
+				var label = document.createElement("label");
+				label.setAttribute("class", "input-label-error");
+				label.innerText = data.errMessage;
+				
+				if(form.empId.nextElementSibling === null) {
+					form.empId.after(label);
+				}
+			} else {
+				if(form.empId.nextElementSibling !== null) {
+					form.empId.nextElementSibling.remove();
+				}
+			}
+		}
+	});
+}
+</script>
 <body>
 	<h1>직원 추가 화면</h1>
 	<section class="container">
 		<form class="small-form" action="./add" method="post">
 			<div class="input-form wide">
 				<label class="input-label">직원ID</label>
-				<input class="input-text" type="text" name="empId" value="${data.empId}">
-				<c:if test="${errorCode eq 'empId'}">
-					<label class="input-label-error">${errorMsg}</label>
-				</c:if>
+				<input class="input-text" type="text" name="empId" onchange="dupCheck(this.value);" value="${data.empId}">
 			</div>
 			<div class="input-form wide">
 				<label class="input-label">직원 이름</label>

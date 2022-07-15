@@ -26,6 +26,7 @@ public class LocsController extends HttpServlet {
 		String page = request.getParameter("page");
 		int count = 5;
 		String sort = "";
+		String whatPage = "locs";
 		
 		HttpSession session = request.getSession();
 		
@@ -44,6 +45,7 @@ public class LocsController extends HttpServlet {
 		}
 		session.setAttribute("pgc", count);
 		session.setAttribute("sort", sort);
+		session.setAttribute("whatPage", whatPage);
 		
 		request.setAttribute("pgc", count);
 		request.setAttribute("menuLocation", "locs");

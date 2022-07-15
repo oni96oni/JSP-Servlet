@@ -1,13 +1,10 @@
-package login.controller;
+package emps.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,21 +16,21 @@ import emps.model.EmpsDTO;
 import emps.model.EmpsDetailDTO;
 import emps.service.EmpsService;
 
-@WebServlet("/myinfo")
-@MultipartConfig(
-		maxFileSize = 1024 * 1024 * 10
-)
-public class MyInfoController extends HttpServlet {
+@WebServlet("/empinfo")
+public class EmpInfoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String view = "/WEB-INF/jsp/login/myinfo.jsp";
 	private EmpsService empsService = new EmpsService();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
 		RequestDispatcher rd = null;
+		EmpsDTO empsData = null;
+		HttpSession session = request.getSession();
 		
-		EmpsDTO empsData = (EmpsDTO)session.getAttribute("loginData");
+		String empId = (String) request.getParameter("empId");
+		empsData = empsService.getEmpsId(Integer.parseInt(empId));
 		EmpsDetailDTO empsDetailData = empsService.getEmpDetail(empsData.getEmpId());
+		session.setAttribute("loginData", empsData);
 		request.setAttribute("empsDetailData", empsDetailData);
 		
 		File file = new File(
