@@ -29,6 +29,7 @@ public class EmpInfoController extends HttpServlet {
 		
 		String empId = (String) request.getParameter("empId");
 		empsData = empsService.getEmpsId(Integer.parseInt(empId));
+		System.out.println("empsData.getEmpId = " + empsData.getEmpId());
 		EmpsDetailDTO empsDetailData = empsService.getEmpDetail(empsData.getEmpId());
 		session.setAttribute("loginData", empsData);
 		request.setAttribute("empsDetailData", empsDetailData);

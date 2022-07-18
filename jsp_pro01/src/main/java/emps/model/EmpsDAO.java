@@ -40,7 +40,6 @@ public class EmpsDAO {
 		Map<String,Integer> page = new HashMap<String,Integer>();
 		page.put("start", start);
 		page.put("end", end);
-		
 		switch(sort) {
 			case "empId":
 				page.put("sort", 1); break;
@@ -70,6 +69,7 @@ public class EmpsDAO {
 	public EmpsDetailDTO selectEmpDetail(int empId) {
 		String mapId = String.format(mapper, "selectEmpDetail");
 		EmpsDetailDTO data = session.selectOne(mapId, empId);
+		System.out.println("data.getEmpId = " + data.getEmpId());
 		return data;
 	}
 	
@@ -79,6 +79,12 @@ public class EmpsDAO {
 	}
 
 	public boolean insertEmps(EmpsDTO data) {
+		//이름을 firstName, lastName 으로 구분해주어야 한다. 이미 객체로 넣는데 DTO를 수정해야하는걸까?
+		//이메일도 @이후의 주소는 없애주어야 한다.
+		//hireDate도 넣어주어야 한다 지금시점기준으로 넣어주기
+		
+		//필수 입력사항 - EMPLOYEE_ID, LAST_NAME, EMAIL, HIRE_DATE, JOB_ID, 나머지는 NULL허용
+		
 		int result = session.insert("empsMapper.empsInsert", data);
 		
 		if(result == 1) {

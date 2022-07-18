@@ -113,15 +113,6 @@ public class EmpsService {
 		dao = new EmpsDAO();
 		EMPS_SERVICE_STATUS status = EMPS_SERVICE_STATUS.SUCCESS;
 		
-		if(!_existEmpId(data.getEmpId())) {
-			status = EMPS_SERVICE_STATUS.EMP_ID_DUPLICATED;
-		}
-		if(!_existEmpName(data.getEmpName())) {
-			status = EMPS_SERVICE_STATUS.EMP_NAME_NOT_EXISTS;
-		}
-		if(!_existEmail(data.getEmail())) {
-			status = EMPS_SERVICE_STATUS.EMP_EMAIL_NOT_EXISTS;
-		}
 		if(!_existJobName(data.getJobName())) {
 			status = EMPS_SERVICE_STATUS.JOB_NAME_NOT_EXISTS;
 		}

@@ -20,7 +20,7 @@ import emps.model.EmpsDetailDTO;
 import emps.service.EmpsService;
 
 @WebServlet("/myinfo")
-@MultipartConfig(
+@MultipartConfig(//기본형데이터 뿐만아니라 바이너리 데이터를 보낼때 사용
 		maxFileSize = 1024 * 1024 * 10
 )
 public class MyInfoController extends HttpServlet {
@@ -50,6 +50,7 @@ public class MyInfoController extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//이클립스 상의 위치가아니라 서버상의 위치를 입력해주어야 한다.
+		//정보 수정시 사진을 따로 업로드 안해도 이메일, 전화번호를 바꿀수 있게 하고싶어
 		HttpSession session = request.getSession();
 		EmpsDTO empsData = (EmpsDTO)session.getAttribute("loginData");
 		
