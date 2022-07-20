@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="empsMapper">
+	<select id="empsSelectAll" resultType="empsDto">
+		SELECT E.EMPLOYEE_ID AS empId
+			 , CONCAT(FIRST_NAME, '' || LAST_NAME) AS empName
+			 , CONCAT(E.EMAIL, '@emp.com') AS email
+			 , J.JOB_TITLE AS jobName
+			 , J.JOB_ID AS jobId
+			 , D.DEPARTMENT_NAME AS deptName
+			 , D.DEPARTMENT_ID AS deptId
+		  FROM EMPLOYEES E
+		  JOIN JOBS J 
+		    ON E.JOB_ID = J.JOB_ID
+		  JOIN DEPARTMENTS D 
+		  	ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+	</select>
+	<select id="empsSelectPage" parameterType="map" resultType="empsDto">
+		SELECT *
+	 	  FROM (SELECT RN
+					 , empId
+					 , empName
+					 , email
+					 , jobName
+					 , jobId
+					 , deptName
+					 , deptId
+				  FROM (SELECT ROWNUM AS RN
+				  			 , E.EMPLOYEE_ID AS empId
+							 , CONCAT(FIRST_NAME, '' || LAST_NAME) AS empName
+							 , CONCAT(E.EMAIL, '@emp.com') AS email
+							 , J.JOB_TITLE AS jobName
+							 , J.JOB_ID AS jobId
+							 , D.DEPARTMENT_NAME AS deptName
+							 , D.DEPARTMENT_ID AS deptId
+						  FROM EMPLOYEES E
+						  JOIN JOBS J 
+						    ON E.JOB_ID = J.JOB_ID
+						  JOIN DEPARTMENTS D 
+						  	ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+						  <choose>
+		          		  	<when test="sort == 1">
+		          		  		ORDER BY empId DESC
+		          		  	</when>
+		          		  	<when test="sort == 2">
+		          		  		ORDER BY empName DESC
+		          		  	</when>
+		          		  	<when test="sort == 3">
+		          		  		ORDER BY email DESC
+		          		  	</when>
+		          		  	<when test="sort == 4">
+		          		  		ORDER BY jobName DESC
+		          		  	</when>
+		          		  	<when test="sort == 5">
+		          		  		ORDER BY jobId DESC
+		          		  	</when>
+		          		  	<when test="sort == 6">
+		          		  		ORDER BY deptName DESC
+		          		  	</when>
+		          		  	<when test="sort == 7">
+		          		  		ORDER BY deptId DESC
+		          		  	</when>
+		          		  </choose>
+						)
+				)
+		WHERE RN BETWEEN ${start} AND ${end}
+	</select>
+	<select id="empsRowCount" resultType="_int">
+		SELECT COUNT(*) 
+		  FROM EMPLOYEES E
+		  JOIN JOBS J 
+		    ON E.JOB_ID = J.JOB_ID
+		  JOIN DEPARTMENTS D 
+		  	ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+	</select>
+	<select id="empsSelectId" resultType="empsDto">
+		SELECT RN
+			 , empId
+			 , empName
+			 , email
+			 , jobName
+			 , jobId
+			 , deptName
+			 , deptId
+		  FROM (SELECT ROWNUM AS RN
+		  			 , E.EMPLOYEE_ID AS empId
+					 , CONCAT(FIRST_NAME, '' || LAST_NAME) AS empName
+					 , CONCAT(E.EMAIL, '@emp.com') AS email
+					 , J.JOB_TITLE AS jobName
+					 , J.JOB_ID AS jobId
+					 , D.DEPARTMENT_NAME AS deptName
+					 , D.DEPARTMENT_ID AS deptId
+				  FROM EMPLOYEES E
+				  JOIN JOBS J 
+				    ON E.JOB_ID = J.JOB_ID
+				  JOIN DEPARTMENTS D 
+				  	ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+				  	)
+		WHERE empId = #{id}
+	</select>
+	<select id="existDeptId" resultType="_int">
+		SELECT COUNT(*) FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
+	<select id="existDeptName" resultType="_int">
+		SELECT COUNT(*) FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
+	<select id="existJobId" resultType="_int">
+		SELECT COUNT(*) FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
+	<select id="existJobName" resultType="_int">
+		SELECT COUNT(*) FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
+	<select id="existEmail" resultType="_int">
+		SELECT COUNT(*) FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
+	<select id="existEmpName" resultType="_int">
+		SELECT COUNT(*) FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
+	<select id="existEmpId" resultType="_int">
+		SELECT COUNT(*) FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
+	<insert id="insertEmp" parameterType="empsDto">
+		INSERT INTO EMPLOYEES(EMPLOYEE_ID
+							, FIRST_NAME
+							, EMAIL
+							, JOB_ID
+							, DEPARTMENT_ID
+							, HIRE_DATE)
+					VALUES(#{empId}
+							, SUBSTR(#{empName}, 1, INSTR(#{empName}, ' ') - 1)
+							, SUBSTR(#{empName}, INSTR(#{empName}, ' ') + 1, LENGTH(#{empName}))
+							, SUBSTR(#{email}, 1, INSTR(#{email}, '@') - 1)
+							, #{jobId}
+							, #{deptId}
+							, SYSDATE)
+	</insert>
+	<insert id="empsInsert" parameterType="empsDto">
+		INSERT INTO EMPLOYEES
+		     VALUES (#{empId}, #{empName}, #{email}, #{jobName}, #{jobId}, #{deptName}, #{deptId})
+	</insert>
+	<update id="empsUpdate" parameterType="empsDto">
+		UPDATE DEPARTMENTS
+		   SET DEPARTMENT_NAME = #{deptName}
+		     , MANAGER_ID = #{mngId}
+		     , LOCATION_ID = #{locId}
+		 WHERE DEPARTMENT_ID = #{deptId}
+	</update>
+	<update id="updateEmp" parameterType="empsDto">
+		UPDATE EMPLOYEES
+		   SET EMAIL = SUBSTR(#{email}, 1, INSTR(#{email}, '@emp.com')-1)
+		 WHERE EMPLOYEE_ID = #{empId}
+	</update>
+	<update id="updateEmpDetail" parameterType="empsDetailDto">
+		UPDATE EMPLOYEES
+		   SET PHONE_NUMBER = #{phone}
+		   	 , SALARY = #{salary}
+		   	 , COMMISSION_PCT = #{commission}
+		   	 , HIRE_DATE = #{hireDate}
+		 WHERE EMPLOYEE_ID = #{empId}
+	</update>
+	<delete id="empsDelete">
+		DELETE FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</delete>
+	<select id="selectEmpDetail" parameterType="_int" resultType="empsDetailDto">
+		SELECT EMPLOYEE_ID AS empId
+		     , HIRE_DATE AS hireDate
+		     , PHONE_NUMBER AS phone
+		     , SALARY AS salary
+		     , COMMISSION_PCT AS commission
+		  FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</select>
+</mapper>

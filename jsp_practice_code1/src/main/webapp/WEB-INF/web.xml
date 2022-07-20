@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>jsp_pro01</display-name>
+  
+  <!-- @WebServlet("/mc") 애너테이션을 사용하지 않으면 이렇게 작성해주어야한다. 
+  <servlet>
+  	<servlet-name>mainServlet</servlet-name>
+  	<servlet-class>main.controller.MainController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>mainServlet</servlet-name>
+  	<url-pattern>/mc</url-pattern>
+  </servlet-mapping>-->
+  
+  <!-- 
+  	분단위로 설정하는 세션만료시간
+   -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+</web-app>
