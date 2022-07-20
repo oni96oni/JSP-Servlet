@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="emps.model.EmpsDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -8,90 +7,125 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>부서 추가</title>
+	<title>직원 추가</title>
 	<%@ include file="../module/head.jsp" %>
 </head>
 <script type="text/javascript">
-function dupCheck(value) {
+window.onload = function() {
+	previewImg.addEventListener("click", function(e) {
+		imgSelect.click();
+	});
+	
+	imgSelect.addEventListener("change", showImagePreview);
+}
+
+function showImagePreview(e) {
+	var file = e.target.files[0];
+	var imgUrl = URL.createObjectURL(file);
+	previewImg.src = imgUrl;
+}
+
+function ajaxImageUpload(e) {
+	var file = e.target.files[0];
+	var fData = new FormData();
+	fData.append("uploadImage", file, file.name);
+	
 	$.ajax({
-		type: "get",
-		url: "/ajax/dupCheck",
-		data: {
-			empId: value
-		},
-		dataType: "json",
+		type: "post",
+		enctype: "multipart/form-data",
+		url: "/ajax/imageUpload",
+		data: fData,
+		processData: false,
+		contentType: false,
 		success: function(data, status) {
-			var form = document.forms[0];
-			if(data.errCode === "duplicate") {
-				var label = document.createElement("label");
-				label.setAttribute("class", "input-label-error");
-				label.innerText = data.errMessage;
-				
-				if(form.empId.nextElementSibling === null) {
-					form.empId.after(label);
-				}
-			} else {
-				if(form.empId.nextElementSibling !== null) {
-					form.empId.nextElementSibling.remove();
-				}
-			}
+			previewImg.src = data.src;
 		}
 	});
 }
 </script>
 <body>
-	<h1>직원 추가 화면</h1>
+	<%@ include file="../module/navigation.jsp" %>
 	<section class="container">
-		<form class="small-form" action="./add" method="post">
-			<div class="input-form wide">
-				<label class="input-label">직원ID</label>
-				<input class="input-text" type="text" name="empId" onchange="dupCheck(this.value);" value="${data.empId}">
-			</div>
-			<div class="input-form wide">
-				<label class="input-label">직원 이름</label>
-				<input class="input-text" type="text" name="empName" value="${data.empName}">
-				<c:if test="${errorCode eq 'empName'}">
-					<label class="input-label-error">${errorMsg}</label>
+		<c:url var="empsAddUrl" value="/emps/add" />
+		<form class="large-form" action="${empsAddUrl}" method="post" enctype="multipart/form-data">
+			<div class="image-form left">
+				<img id="previewImg" class="image-360" alt="여기에는 증명 사진이 배치됩니다." src="${imagePath}">
+				<br>
+				<input id="imgSelect" type="file" name="uploadImg" value="이미지 선택" accept="image/png">
+				<c:if test="${not empty imageError}">
+					<label class="input-label-error">${imageError}</label>
 				</c:if>
 			</div>
-			<div class="input-form wide">
-				<label class="input-label">이메일</label>
-				<input class="input-text" type="text" name="email" value="${data.email}">
-				<c:if test="${errorCode eq 'email'}">
-					<label class="input-label-error">${errorMsg}</label>
-				</c:if>
+			<div class="input-form inline">
+				<div class="input-form">
+					<label class="input-label w-100">ID</label>
+					<input class="input-text w-auto" type="text" name="empId" value="">
+				</div>
+				<div class="input-form">
+					<label class="input-label w-100">이름</label>
+					<input class="input-text w-auto" type="text" name="empName" value="${param.empName}">
+				</div>
 			</div>
-			<div class="input-form wide">
-				<label class="input-label">직업명</label>
-				<input class="input-text" type="text" name="jobName" value="${data.jobName}">
-				<c:if test="${errorCode eq 'jobName'}">
-					<label class="input-label-error">${errorMsg}</label>
-				</c:if>
+			<div class="input-form inline">
+				<div class="input-form">
+					<label class="input-label w-100">직급</label>
+					<select class="select-form w-auto" name="jobId">
+						<c:forEach items="${jobDatas}" var="item">
+							<c:choose>
+								<c:when test="${item.jobId eq param.jobId}">
+									<option value="${item.jobId}" selected>${item.jobName}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${item.jobId}">${item.jobName}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+				</div>
+				<div class="input-form">
+					<label class="input-label w-100">부서</label>
+					<select class="select-form w-auto" name="deptId">
+						<c:forEach items="${deptDatas}" var="item">
+							<c:choose>
+								<c:when test="${item.deptId eq param.deptId}">
+									<option value="${item.deptId}" selected>${item.deptName}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${item.deptId}">${item.deptName}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+				</div>
 			</div>
-			<div class="input-form wide">
-				<label class="input-label">직업ID</label>
-				<input class="input-text" type="text" name="jobId" value="${data.jobId}">
-				<c:if test="${errorCode eq 'jobId'}">
-					<label class="input-label-error">${errorMsg}</label>
-				</c:if>
+			<div class="input-form inline">
+				<div class="input-form">
+					<label class="input-label w-100">이메일</label>
+					<input class="input-text w-auto" type="text" name="email" value="${param.email}">
+				</div>
 			</div>
-			<div class="input-form wide">
-				<label class="input-label">부서이름</label>
-				<input class="input-text" type="text" name="deptName" value="${data.deptName}">
-				<c:if test="${errorCode eq 'deptName'}">
-					<label class="input-label-error">${errorMsg}</label>
-				</c:if>
+			<div class="input-form inline">
+				<div class="input-form">
+					<label class="input-label w-100">입사일</label>
+					<input class="input-text w-auto" type="text" name="hireDate" value="${param.hireDate}" >
+				</div>
+				<div class="input-form">
+					<label class="input-label w-100">전화번호</label>
+					<input class="input-text w-auto" type="text" name="phone" value="${param.phone}">
+				</div>
 			</div>
-			<div class="input-form wide">
-				<label class="input-label">부서ID</label>
-				<input class="input-text" type="text" name="deptId" value="${data.deptId}">
-				<c:if test="${errorCode eq 'deptId'}">
-					<label class="input-label-error">${errorMsg}</label>
-				</c:if>
+			<div class="input-form inline">
+				<div class="input-form">
+					<label class="input-label w-100">급여액</label>
+					<input class="input-text w-auto" type="text" name="salary" value="${param.salary}">
+				</div>
+				<div class="input-form">
+					<label class="input-label w-100">커미션</label>
+					<input class="input-text w-auto" type="text" name="commission" value="${param.commission}">
+				</div>
 			</div>
-			<div class="input-form wide form-right">
-				<button class="btn btn-ouitline btn-ok" type="submit">저장</button>
-				<button class="btn btn-ouitline btn-cancel" type="button" onclick="location.href='../emps'">취소</button>
+			<div class="input-form form-right">
+				<button class="btn btn-outline btn-ok" type="submit">저장</button>
 			</div>
 		</form>
 	</section>

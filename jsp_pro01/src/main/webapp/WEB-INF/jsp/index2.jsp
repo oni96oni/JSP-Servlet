@@ -18,7 +18,8 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/module/navigation.jsp" %>
-	${sessionScope.loginData.empName} 님 환영합니다.<br>
-	
+	<section class="container">
+		${sessionScope.loginData.empName} 님 환영합니다.
+	</section>
 </body>
 </html>

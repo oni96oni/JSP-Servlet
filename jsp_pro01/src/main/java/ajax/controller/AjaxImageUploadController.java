@@ -18,22 +18,24 @@ import emps.model.EmpsDTO;
 @MultipartConfig
 public class AjaxImageUploadController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
-		EmpsDTO empsData = (EmpsDTO) session.getAttribute("loginData");
+		EmpsDTO empsData = (EmpsDTO)session.getAttribute("loginData");
 		
 		Part part = request.getPart("uploadImage");
 		
 		if(!part.getSubmittedFileName().isEmpty()) {
 			String realPath = request.getServletContext().getRealPath("/static/img/emp/");
-			part.write(realPath + empsData.getEmpId()+".png");
+			part.write(realPath + empsData.getEmpId() + ".png");
+			
 			out.println("{");
-			out.println("	\"src\": \"/static/img/emp/" + empsData.getEmpId()+".png\"");
+			out.println("    \"src\": \"/static/img/emp/" + empsData.getEmpId() + ".png\"");
 			out.println("}");
 			out.flush();
 		}
 	}
+
 }

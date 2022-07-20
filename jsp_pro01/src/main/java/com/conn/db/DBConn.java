@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class DBConn {
+
 	public static SqlSession getSqlSession() {
 		SqlSession sess = null;
 		
@@ -25,4 +26,5 @@ public class DBConn {
 		
 		return sess;
 	}
+	
 }

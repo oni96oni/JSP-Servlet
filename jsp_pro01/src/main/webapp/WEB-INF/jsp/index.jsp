@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -22,47 +21,27 @@
 			},
 			dataType: "json",
 			success: function(data, status) {
-				//서버로 부터의 응답코드가 200번일때 동작할 함수작성
-				//data: 서버로 부터 받은 데이터 정보를 가지고 있는 객체
-				//status: 응답 코드
+				// 서버로 부터의 응답 코드가 200 번일때 동작할 함수 작성
+				// data: 서버로 부터 받은 데이터 정보를 가지고 있는 객체
+				// status: 응답 코드
 				console.log("success: " + data);
 				console.log("success: " + data.attributeName);
 				console.log("success: " + status);
 			},
 			error: function(data, status) {
-				//서버로 부터의 응답코드가 200이 아닐때 동작할 함수작성
-				//data: 서버로 부터 받은 데이터 정보를 가지고 있는 객체
-				//status: 응답 코드
+				// 서버로 부터의 응답 코드가 200 이 아닐 때 동작할 함수 작성
+				// data: 서버로 부터 받은 데이터 정보를 가지고 있는 객체
+				// status: 응답 코드
 				console.log("error: " + data);
 				console.log("error: " + status);
 			},
 			complete: function(data, status) {
-				//통신 성공 여부와 관계 없이 완료후 동작할 함수 작성
+				// 통신 성공 여부와 관계 없이 완료후 동작할 함수 작성
 				console.log("complete: " + data);
 				console.log("complete: " + status);
 			}
-		})
+		});
 	}
-	
-	<%-- 
-	<script>
-        function showError(error) {
-            document.getElementById("error").innerHTML = error;
-            document.getElementById("error").style.display = "none";
-        }
-    </script>
-    <div id="error" style="display: none;"></div>
-    <input type="text" id="name" name="name" onblur="showError(this.value)">
-    <input type="submit" value="전송">
-    <script>
-        document.getElementById("name").onblur = function() {
-            if (this.value == "") {
-                showError("이름을 입력하세요");
-            }
-        }
-    </script>
-	--%>
-	
 </script>
 <body>
 	<%@ include file="/WEB-INF/jsp/module/navigation.jsp" %>

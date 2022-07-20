@@ -35,7 +35,7 @@ public class LoginController extends HttpServlet {
 		}
 		rd.forward(request, response);
 	}
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String empId = request.getParameter("empId");
 		String deptId = request.getParameter("deptId");
@@ -59,4 +59,5 @@ public class LoginController extends HttpServlet {
 		}
 		
 	}
+
 }

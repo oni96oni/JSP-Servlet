@@ -1,56 +1,64 @@
 package locs.model;
 
 public class LocsDTO {
-	
-	private int locsId;
-	private String strAdd;
-	private String posCode;
+	private int locId;
+	private String stAddr;
+	private String postal;
 	private String city;
-	private String staPro;
-	private String conId;
+	private String state;
+	private String ctyId;
 	
+	public int getLocId() {
+		return locId;
+	}
 	
-	public int getLocsId() {
-		return locsId;
+	public void setLocId(int locId) {
+		this.locId = locId;
 	}
-	public void setLocsId(int locsId) {
-		this.locsId = locsId;
+	
+	public String getStAddr() {
+		return stAddr;
 	}
-	public String getStrAdd() {
-		return strAdd;
+	
+	public void setStAddr(String stAddr) {
+		this.stAddr = stAddr;
 	}
-	public void setStrAdd(String strAdd) {
-		this.strAdd = strAdd;
+	
+	public String getPostal() {
+		return postal;
 	}
-	public String getPosCode() {
-		return posCode;
+	
+	public void setPostal(String postal) {
+		this.postal = postal;
 	}
-	public void setPosCode(String posCode) {
-		this.posCode = posCode;
-	}
+	
 	public String getCity() {
 		return city;
 	}
+	
 	public void setCity(String city) {
 		this.city = city;
 	}
-	public String getStaPro() {
-		return staPro;
-	}
-	public void setStaPro(String staPro) {
-		this.staPro = staPro;
-	}
-	public String getConId() {
-		return conId;
-	}
-	public void setConId(String conId) {
-		this.conId = conId;
+	
+	public String getState() {
+		return state;
 	}
 	
+	public void setState(String state) {
+		this.state = state;
+	}
+	
+	public String getCtyId() {
+		return ctyId;
+	}
+	
+	public void setCtyId(String ctyId) {
+		this.ctyId = ctyId;
+	}
 	
 	@Override
 	public String toString() {
-		return "LocsDTO [locsId=" + locsId + ", strAdd=" + strAdd + ", posCode=" + posCode + ", city=" + city
-				+ ", staPro=" + staPro + ", conId=" + conId + "]";
+		return "LocsDTO [locId=" + locId + ", stAddr=" + stAddr + ", postal=" + postal + ", city=" + city + ", state="
+				+ state + ", ctyId=" + ctyId + "]";
 	}
 }

@@ -3,9 +3,6 @@ package dept.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
-
 import dept.model.DeptDAO;
 import dept.model.DeptDTO;
 
@@ -145,13 +142,11 @@ public class DeptService {
 	}
 	
 	private boolean _existManager(int id) {
-		boolean result = dao.existManager(id);
-		return result;
+		return dao.existManager(id);
 	}
 	
 	private boolean _existLocation(int id) {
-		boolean result = dao.existLocation(id);
-		return result;
+		return dao.existLocation(id);
 	}
 
 	public DEPT_SERVICE_STATUS modifyDept(DeptDTO data) {
@@ -203,5 +198,4 @@ public class DeptService {
 		dao.close();
 		return status;
 	}
-
 }

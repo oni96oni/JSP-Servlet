@@ -42,7 +42,7 @@ public class DeptAddController extends HttpServlet {
 		String view = "/WEB-INF/jsp/dept/add.jsp";
 		switch(status) {
 			case SUCCESS:
-				response.sendRedirect("/depts?search=" + data.getDeptId());
+				response.sendRedirect(request.getContextPath() + "/depts?search=" + data.getDeptId());
 				return;
 			case DEPT_ID_DUPLICATED:
 				request.setAttribute("errorCode", "deptId");

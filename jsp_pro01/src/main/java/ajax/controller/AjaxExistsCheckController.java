@@ -9,15 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dept.model.DeptDTO;
 import dept.service.DeptService;
-import locs.service.LocsService;
 
 @WebServlet("/ajax/existsCheck")
 public class AjaxExistsCheckController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private DeptService deptService = new DeptService();
-	private LocsService locsService = new LocsService();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
@@ -35,10 +34,6 @@ public class AjaxExistsCheckController extends HttpServlet {
 				case "locId":
 					data = deptService.existsLocation(value);
 					errMessage = "    \"errMessage\": \"해당 지역 ID는 존재하지 않습니다.\"";
-					break;
-				case "conId":
-					data = locsService.existsCountry(value);
-					errMessage = "    \"errMessage\": \"해당 국가 ID는 존재하지 않습니다.\"";
 					break;
 			}
 			

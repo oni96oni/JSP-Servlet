@@ -1,96 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="locsMapper">
 	<select id="locsSelectAll" resultType="locsDto">
-		SELECT LOCATION_ID AS locsId
-			 , STREET_ADDRESS AS strAdd
-			 , POSTAL_CODE AS posCode
-			 , CITY AS city
-			 , STATE_PROVINCE AS staPro
-			 , COUNTRY_ID AS conId
+		SELECT LOCATION_ID AS locId
+		     , STREET_ADDRESS AS stAddr
+		     , POSTAL_CODE AS postal
+		     , CITY AS city
+		     , STATE_PROVINCE AS state
+		     , COUNTRY_ID AS ctyId
 		  FROM LOCATIONS
 	</select>
-	
-	<select id="locsSelectPage" parameterType="map" resultType="locsDto">
-		SELECT *
-		  FROM (SELECT ROWNUM AS RN
-		             , locsId
-					 , strAdd
-					 , posCode
-					 , city
-					 , staPro
-					 , conId
-		 		  FROM (SELECT LOCATION_ID AS locsId
-							 , STREET_ADDRESS AS strAdd
-							 , POSTAL_CODE AS posCode
-							 , CITY AS city
-							 , STATE_PROVINCE AS staPro
-							 , COUNTRY_ID AS conId
-				 		  FROM LOCATIONS
-				 		  <choose>
-			        		  	<when test="sort == 1">
-			        		  		ORDER BY locsId DESC
-			        		  	</when>
-			        		  	<when test="sort == 2">
-			        		  		ORDER BY strAdd DESC
-			        		  	</when>
-			        		  	<when test="sort == 3">
-			        		  		ORDER BY posCode DESC
-			        		  	</when>
-			        		  	<when test="sort == 4">
-			        		  		ORDER BY city DESC
-			        		  	</when>
-			        		  	<when test="sort == 4">
-			        		  		ORDER BY staPro DESC
-			        		  	</when>
-			        		  	<when test="sort == 4">
-			        		  		ORDER BY conId DESC
-			        		  	</when>
-				          </choose>
-		       	)
-		       )
-		 WHERE RN BETWEEN #{start} AND #{end}
-	</select>
-	
-	<select id="locsRowCount" resultType="_int">
-		SELECT COUNT(*) FROM LOCATIONS
-	</select>
-	
 	<select id="locsSelectId" resultType="locsDto">
-		SELECT LOCATION_ID AS locsId
-			 , STREET_ADDRESS AS strAdd
-			 , POSTAL_CODE AS posCode
-			 , CITY AS city
-			 , STATE_PROVINCE AS staPro
-			 , COUNTRY_ID AS conId
+		SELECT LOCATION_ID AS locId
+		     , STREET_ADDRESS AS stAddr
+		     , POSTAL_CODE AS postal
+		     , CITY AS city
+		     , STATE_PROVINCE AS state
+		     , COUNTRY_ID AS ctyId
 		  FROM LOCATIONS
 		 WHERE LOCATION_ID = #{id}
 	</select>
-	
-	<select id="existConId" resultType="_int">
-		SELECT COUNT(*) FROM COUNTRIES
-		 WHERE COUNTRY_ID = #{id}
-	</select>
-	
-	<insert id="locsInsert" parameterType="locsDto">
-		INSERT INTO LOCATIONS
-		     VALUES (#{locsId}, #{strAdd}, #{posCode}, #{city}, #{staPro}, #{conId})
-	</insert>
-	
-	<update id="locsUpdate" parameterType="locsDto">
-		UPDATE LOCATIONS
-		   SET STREET_ADDRESS = #{strAdd}
-		     , POSTAL_CODE = #{posCode}
-		     , CITY = #{city}
-		     , STATE_PROVINCE= #{staPro}
-		     , COUNTRY_ID = #{conId}
-		 WHERE LOCATION_ID = #{locsId}
-	</update>
-	
-	<delete id="locsDelete">
-		DELETE FROM LOCATIONS
-		 WHERE LOCATION_ID = #{id}
-	</delete>
 </mapper>

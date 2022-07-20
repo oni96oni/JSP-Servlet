@@ -10,15 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/jsp/response")
 public class JspResponseController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String view = "/WEB-INF/jsp/jsp/response.jsp"; //jsp파일의 경로
+		String view = "/WEB-INF/jsp/jsp/response.jsp";
 		
 		if(request.getParameter("redirect") != null) {
 			response.sendRedirect("/jsp01/main");
 		} else {
 			request.getRequestDispatcher(view).forward(request, response);
 		}
-		
 	}
+
 }

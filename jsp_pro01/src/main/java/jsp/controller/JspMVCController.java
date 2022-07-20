@@ -12,7 +12,7 @@ public class JspMVCController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String view = "/WEB-INF/jsp/jsp/mvc.jsp"; //jsp파일의 경로
+		String view = "/WEB-INF/jsp/jsp/mvc.jsp";
 		request.getRequestDispatcher(view).forward(request, response);
 	}
 

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/ajax/test")
 public class AjaxTestController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String x = request.getParameter("x");
 		String y = request.getParameter("y");
@@ -24,12 +24,12 @@ public class AjaxTestController extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		out.println("{");
-		out.println("	\"attributeName\":\"value\"");
+		out.println("    \"attributeName\": \"value\"");
 		out.println("}");
 		out.flush();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
 	}
+
 }

@@ -10,12 +10,5 @@
 <link rel="stylesheet" type="text/css" href="${staticUrl}/css/paging.css">
 <link rel="stylesheet" type="text/css" href="${staticUrl}/css/required.css">
 <link rel="stylesheet" type="text/css" href="${staticUrl}/css/table.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/required.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-3.6.0.min.js"></script>
-
-<!-- 
-비동기화 통신은 요청을 하고 응답을 기다리는 동안 다른 작업을 진행!
-	-> ajax라는 기능을 이용해야 한다.
-	
-
--->
+<script type="text/javascript" src="${staticUrl}/js/required.js"></script>
+<script type="text/javascript" src="${staticUrl}/js/jquery-3.6.0.min.js"></script>
