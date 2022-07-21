@@ -30,7 +30,13 @@ public class EmpsDetailDTO {
 	}
 	
 	public void setHireDate(String hireDate) {
-		this.hireDate = Date.valueOf(hireDate);
+		if(hireDate == null) {
+			this.hireDate = new Date(new java.util.Date().getTime());
+		} else if(hireDate.isEmpty()) {
+			this.hireDate = new Date(new java.util.Date().getTime());
+		} else {
+			this.hireDate = Date.valueOf(hireDate);
+		}
 	}
 	
 	public String getPhone() {
@@ -50,7 +56,17 @@ public class EmpsDetailDTO {
 	}
 	
 	public void setSalary(String salary) {
-		this.salary = Integer.parseInt(salary);
+		if(salary == null) salary = "1";
+		if(salary.isEmpty()) salary = "1";
+		
+		boolean isNumber = salary.matches("\\d+"); //이걸로 null체크까지 한번에 할 수 있나?
+		if(isNumber) {
+			this.salary = Integer.parseInt(salary);
+		} else {
+			//기본값넣어주거나
+			this.salary = 1;
+			//자스로 프론트에서 비어있다고 출력하고 대기시키기
+		}
 	}
 	
 	public double getCommission() {
@@ -65,6 +81,8 @@ public class EmpsDetailDTO {
 	}
 	
 	public void setCommission(String commission) {
+		if(commission == null) commission = "0";
+		if(commission.isEmpty()) commission = "0";
 		setCommission(Double.parseDouble(commission));
 	}
 	

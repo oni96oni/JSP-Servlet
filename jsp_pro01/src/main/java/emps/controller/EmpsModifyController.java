@@ -1,7 +1,6 @@
 package emps.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,36 +11,40 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import dept.model.DeptDTO;
 import dept.service.DeptService;
 import emps.model.EmpsDTO;
 import emps.model.EmpsDetailDTO;
 import emps.service.EmpsService;
-import job.model.JobDTO;
 import job.service.JobService;
 
-@WebServlet("/emps/add")
+@WebServlet("/emps/modify")
 @MultipartConfig
-public class EmpsAddController extends HttpServlet {
+public class EmpsModifyController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	String view = "/WEB-INF/jsp/emps/modify.jsp";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String view = "/WEB-INF/jsp/emps/add.jsp";
+		String id = request.getParameter("id");
 		
 		EmpsService empsService =  new EmpsService();
 		DeptService deptService = new DeptService();
 		JobService jobService = new JobService();
 		
-		List<DeptDTO> deptDatas = deptService.getAll();
-		List<JobDTO> jobDatas = jobService.getAll();
+		EmpsDTO empsData = empsService.getId(id);
+		EmpsDetailDTO empsDetailData = empsService.getEmpDetail(empsData.getEmpId());
 		
-		request.setAttribute("deptDatas", deptDatas);
-		request.setAttribute("jobDatas", jobDatas);
-		request.setAttribute("imagePath", empsService.getProfileImagePath(request, "/static/img/emp", new EmpsDTO()));
+		String imagePath = empsService.getProfileImagePath(request, "/static/img/emp/", empsData);
+		
+		request.setAttribute("empsData", empsData);
+		request.setAttribute("empsDetailData", empsDetailData);
+		request.setAttribute("jobDatas", jobService.getAll());
+		request.setAttribute("deptDatas", deptService.getAll());
+		request.setAttribute("imagePath", imagePath);
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
 	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String empId = request.getParameter("empId");
 		String empName = request.getParameter("empName");
@@ -53,36 +56,39 @@ public class EmpsAddController extends HttpServlet {
 		String salary = request.getParameter("salary");
 		String commission = request.getParameter("commission");
 		
-		EmpsDTO empsData = new EmpsDTO();
-		empsData.setEmpId(empId);
+		EmpsService empsService =  new EmpsService();
+		EmpsDTO empsData = empsService.getId(empId);
+		
+		if(empsData == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/error/error.jsp");
+			request.setAttribute("error", "해당 데이터가 존재하지 않습니다");
+			rd.forward(request, response);
+			return;
+		}
+		
 		empsData.setEmpName(empName);
 		empsData.setJobId(jobId);
 		empsData.setDeptId(deptId);
 		empsData.setEmail(email);
 		
-		EmpsDetailDTO empsDetailData = new EmpsDetailDTO();
-		empsDetailData.setEmpId(empId);
+		EmpsDetailDTO empsDetailData = empsService.getEmpDetail(empsData.getEmpId());
+		
+		if(empsDetailData == null) {
+			empsDetailData = new EmpsDetailDTO();
+			empsDetailData.setEmpId(empsData.getEmpId());
+		}
+		
 		empsDetailData.setHireDate(hireDate);
 		empsDetailData.setPhone(phone);
 		empsDetailData.setSalary(salary);
 		empsDetailData.setCommission(commission);
 		
-		EmpsService empsService = new EmpsService();
-		boolean result = empsService.add(empsData, empsDetailData);
+		boolean result = empsService.setEmp(empsData, empsDetailData);
 		
 		if(result) {
 			// 저장 성공
 			Part imgFile = request.getPart("uploadImg");
 			String originName = imgFile.getSubmittedFileName();
-			
-			/* 나중에 디테일 화면이 구현되면 완성 할 것.
-			 * PNG 이미지가 아닌 다른 이미지 파일이 업로드 되는 경우, 해당 페이지에 오류를 출력하기 위함
-			if(!originName.endsWith(".png")) {
-				request.setAttribute("imageError", "이미지는 PNG 만 업로드 하세요.");
-				doGet(request, response);
-				return;
-			}
-			*/
 			
 			String location = request.getServletContext().getRealPath("/static/img/emp") + "/" + empsData.getEmpId() + ".png";
 			
@@ -90,8 +96,7 @@ public class EmpsAddController extends HttpServlet {
 				imgFile.write(location);
 			}
 			
-			response.sendRedirect(request.getContextPath() + "/emps");
-			// response.sendRedirect(request.getContextPath() + "/emps/detail?id=" + empsData.getEmpId());
+			response.sendRedirect(request.getContextPath() + "/emps/detail?id=" + empsData.getEmpId());
 		} else {
 			// 저장 실패
 			doGet(request, response);

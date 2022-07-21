@@ -43,7 +43,6 @@
 				<col class="col-240">
 				<col class="col-240">
 				<col class="col-240">
-				<col class="col-120">
 			</colgroup>
 			<thead>
 				<tr>
@@ -62,26 +61,20 @@
 					<th class="${sort == 'deptName' ? 'sort-desc' : ''}"
 					onclick="location.href='./emps?page=${page}&sort=deptName'">부서
 					</th>
-					<th class="border-hidden-right"></th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${not empty datas}">
 					<c:forEach items="${datas}" var="data">
-						<tr>
+						<c:url var="empDetailUrl" value="/emps/detail">
+							<c:param name="id" value="${data.empId }"/><!-- ?id=${data.empId} 이런식의 코드를 줄일수있다. 파라미터 많을때 사용 -->
+						</c:url>
+						<tr onclick="location.href='${empDetailUrl}'">
 							<td>${data.empId}</td>
 							<td>${data.empName}</td>
 							<td>${data.email}</td>
 							<td>${data.jobName}</td>
 							<td>${data.deptName}</td>
-							<td class="border-hidden-right">
-								<button class="btn btn-icon" type="button" onclick="location.href='./emps/mod?id=${data.empId}'">
-									<span class="material-symbols-outlined">edit</span>
-								</button>
-								<button class="btn btn-icon" type="button" onclick="location.href='./emps/del?id=${data.empId}'">
-									<span class="material-symbols-outlined">delete</span>
-								</button>
-							</td>
 						</tr>
 					</c:forEach>
 				</c:if>

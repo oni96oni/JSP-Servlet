@@ -12,6 +12,12 @@ public class EmpsDAO {
 	private SqlSession session = DBConn.getSqlSession();
 	private String mapper = "empsMapper.%s";
 	
+	public Map<String, Integer> checkSalaryRange(String id) {
+		String mapId = String.format(mapper, "checkSalaryRange");
+		Map<String, Integer> data = session.selectOne(mapId, id);
+		return data;
+	}
+	
 	public List<EmpsDTO> selectAll() {
 		String mapId = String.format(mapper, "selectAll");
 		List<EmpsDTO> datas = session.selectList(mapId);
@@ -71,11 +77,16 @@ public class EmpsDAO {
 
 	public boolean insertEmp(EmpsDTO empsData) {
 		String mapId = String.format(mapper, "insertEmp");
-		int result = session.update(mapId, empsData);
+		int result = session.insert(mapId, empsData);
 		if(result == 1) {
 			return true;
 		}
 		return false;
 	}
 
+	public EmpsDTO selectId(int id) {
+		String mapId = String.format(mapper, "selectId");
+		EmpsDTO datas = session.selectOne(mapId, id);
+		return datas;
+	}
 }
