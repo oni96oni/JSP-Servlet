@@ -21,6 +21,8 @@ public class EmpsController extends HttpServlet {
 	private EmpsService service = new EmpsService();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		
 		String page = request.getParameter("page");
 		int count = 5;
 		
@@ -28,7 +30,6 @@ public class EmpsController extends HttpServlet {
 			page = "1";
 		}
 		
-		HttpSession session = request.getSession();
 		if(session.getAttribute("pgc") != null) {
 			count = Integer.parseInt(session.getAttribute("pgc").toString());
 		}
@@ -40,9 +41,9 @@ public class EmpsController extends HttpServlet {
 		request.setAttribute("menuLocation", "emps");
 		session.setAttribute("pgc", count);
 		
-		// List<EmpsDTO> datas = service.getAll();
-		List<EmpsDTO> datas = service.getPage(Integer.parseInt(page), count);
-		List<Integer> pageList = service.getPageNumberList(count);
+		EmpsDTO empsData = (EmpsDTO)session.getAttribute("loginData");
+		List<EmpsDTO> datas = service.getPage(empsData, Integer.parseInt(page), count);
+		List<Integer> pageList = service.getPageNumberList(empsData, count);
 		
 		request.setAttribute("datas", datas);
 		request.setAttribute("page", page);

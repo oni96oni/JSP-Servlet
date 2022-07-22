@@ -30,23 +30,37 @@
 				</ul>
 			</li>
 			<c:if test="${not empty sessionScope.loginData}">
-				<li class="nav-item <%=menuLocation.equals("emps") ? "active" : "" %>">
-					<a class="nav-link" href="./emps">직원</a>
-				</li>
-				<li class="nav-item <%=menuLocation.equals("depts") ? "active" : "" %>">
-					<a class="nav-link" href="./depts">부서</a>
-				</li>
-				<li class="nav-item <%=menuLocation.equals("locs") ? "active" : "" %>">
-					<a class="nav-link" href="./locs">지역</a>
-				</li>
-				<li class="nav-item">
-					<c:url var="myInfoUrl" value="/myinfo" />
-					<a class="nav-link" href="${myInfoUrl}">내정보</a>
-				</li>
-				<li class="nav-item">
-					<c:url var="logoutUrl" value="/logout" />
-					<a class="nav-link" href="${logoutUrl}">로그아웃</a>
-				</li>
+				<c:forEach items="${sessionScope.permData}" var="perm">
+					<c:if test="${perm.tableName eq 'employees'}">
+						<c:if test="${perm.pRead}">
+							<li class="nav-item <%=menuLocation.equals("emps") ? "active" : "" %>">
+								<a class="nav-link" href="./emps">직원</a>
+							</li>
+						</c:if>
+					</c:if>
+					<c:if test="${perm.tableName eq 'departments'}">
+						<c:if test="${perm.pRead}">
+							<li class="nav-item <%=menuLocation.equals("depts") ? "active" : "" %>">
+								<a class="nav-link" href="./depts">부서</a>
+							</li>
+						</c:if>
+					</c:if>
+					<c:if test="${perm.tableName eq 'locations'}">
+						<c:if test="${perm.pRead}">
+							<li class="nav-item <%=menuLocation.equals("locs") ? "active" : "" %>">
+								<a class="nav-link" href="./locs">지역</a>
+							</li>
+						</c:if>
+					</c:if>
+				</c:forEach>
+					<li class="nav-item">
+						<c:url var="myInfoUrl" value="/myinfo" />
+						<a class="nav-link" href="${myInfoUrl}">내 정보</a>
+					</li>
+					<li class="nav-item">
+						<c:url var="logoutUrl" value="/logout" />
+						<a class="nav-link" href="${logoutUrl}">로그아웃</a>
+					</li>
 			</c:if>
 		</ul>
 	</nav>

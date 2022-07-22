@@ -81,6 +81,9 @@
 				    ON E.JOB_ID = J.JOB_ID
 				  JOIN DEPARTMENTS D
 				    ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+		    <if test="deptId != 10">
+			 	 WHERE E.DEPARTMENT_ID = #{deptId}
+		    </if>
 			    )
 		 WHERE RN BETWEEN #{start} AND #{end}
 	</select>
@@ -91,6 +94,9 @@
 		    ON E.JOB_ID = J.JOB_ID
 		  JOIN DEPARTMENTS D
 		    ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+ 	<if test="deptId != 10">
+	 	 WHERE E.DEPARTMENT_ID = #{id}
+    </if>
 	</select>
 	<select id="selectEmpDetail" parameterType="_int" resultType="empsDetailDto">
 		SELECT EMPLOYEE_ID AS empId
@@ -118,4 +124,8 @@
 		     , HIRE_DATE = #{hireDate}
 		 WHERE EMPLOYEE_ID = #{empId}
 	</update>
+	<delete id="deleteId">
+		DELETE FROM EMPLOYEES
+		 WHERE EMPLOYEE_ID = #{id}
+	</delete>
 </mapper>

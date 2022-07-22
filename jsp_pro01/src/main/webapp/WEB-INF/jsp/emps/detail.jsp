@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>직원 상세 정보</title>
+	<title>직원 상세</title>
 	<%@ include file="../module/head.jsp" %>
 </head>
 <script type="text/javascript">
@@ -42,11 +42,30 @@ function ajaxImageUpload(e) {
 		}
 	});
 }
+function ajaxEmpDelete(id) {
+	if(confirm("해당 데이터를 삭제하겠습니까?")) {
+		$.ajax({
+			type: "post",
+			url: "/ajax/delete",
+			data: {
+				id: id
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data.type === "success") {
+					alert(data.message);
+					location.href="/emps";
+				} else if(data.type === "fail") {
+					alert(data.message);
+				}
+			}
+		});
+	}
+}
 </script>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
 	<section class="container">
-		<c:url var="empsAddUrl" value="/emps/add" />
 		<div class="large-form">
 			<div class="image-form left">
 				<img id="previewImg" class="image-360" alt="여기에는 증명 사진이 배치됩니다." src="${imagePath}">
@@ -72,7 +91,7 @@ function ajaxImageUpload(e) {
 				<div class="input-form">
 					<label class="input-label w-100">부서</label>
 					<select class="select-form w-auto" name="deptId" disabled>
-						<option value="${empsData.deptId}" selected>${empsData.deptName}</option>
+						<option value="${empsData.deptId}">${empsData.deptName}</option>
 					</select>
 				</div>
 			</div>
@@ -104,13 +123,13 @@ function ajaxImageUpload(e) {
 			</div>
 			<div class="input-form form-right">
 				<c:url var="empModUrl" value="/emps/modify">
-					<c:param name="id" value="${empsData.empId}"/>
+					<c:param name="id" value="${empsData.empId}" />
 				</c:url>
 				<button class="btn btn-outline btn-ok" type="button" onclick="location.href='${empModUrl}'">수정</button>
 				<c:url var="empDelUrl" value="/emps/delete">
-					<c:param name="id" value="${empsData.empId}"/>
+					<c:param name="id" value="${empsData.empId}" />
 				</c:url>
-				<button class="btn btn-outline btn-cancel" type="button" onclick="location.href='${empDelUrl}'">삭제</button>
+				<button class="btn btn-outline btn-cancel" type="button" onclick="ajaxEmpDelete(${empsData.empId});">삭제</button>
 			</div>
 		</div>
 	</section>

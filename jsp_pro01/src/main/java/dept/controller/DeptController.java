@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import dept.model.DeptDTO;
 import dept.service.DeptService;
+import login.model.PermDTO;
 
 @WebServlet("/depts")
 public class DeptController extends HttpServlet {
@@ -23,6 +23,20 @@ public class DeptController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		
+		boolean isPerm = false;
+		
+		List<PermDTO> perms = (List<PermDTO>) session.getAttribute("permData");
+		for(PermDTO perm : perms) {
+			if(perm.getTableName().equals("departments")) {
+				isPerm = perm.ispRead();
+			}
+		}
+		
+		if(!isPerm) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 		
 		String search = request.getParameter("search");
 		String page = request.getParameter("page");

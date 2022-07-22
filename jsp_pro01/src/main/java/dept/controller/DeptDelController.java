@@ -1,15 +1,19 @@
 package dept.controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dept.model.DeptDTO;
 import dept.service.DEPT_SERVICE_STATUS;
 import dept.service.DeptService;
+import login.model.PermDTO;
 
 @WebServlet("/depts/del")
 public class DeptDelController extends HttpServlet {
@@ -18,6 +22,21 @@ public class DeptDelController extends HttpServlet {
 	private DeptService service = new DeptService();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		
+		boolean isPerm = false;
+		List<PermDTO> perms = (List<PermDTO>) session.getAttribute("permData");
+		for(PermDTO perm : perms) {
+			if(perm.getTableName().equals("departments")) {
+				isPerm = perm.ispDelete();
+			}
+		}
+		
+		if(!isPerm) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
+		
 		String id = request.getParameter("id");
 		
 		DeptDTO data = service.getDeptId(id);

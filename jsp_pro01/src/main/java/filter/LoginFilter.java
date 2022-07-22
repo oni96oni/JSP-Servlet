@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 
 @WebFilter(
 		urlPatterns = {
-				"/myinfo", "/depts", "/locs",
-				"/depts/*", "/locs/*"
+				"/myinfo", "/depts", "/locs", "/emps",
+				"/depts/*", "/locs/*", "/emps/*"
 		}
 )
 public class LoginFilter extends HttpFilter implements Filter {
