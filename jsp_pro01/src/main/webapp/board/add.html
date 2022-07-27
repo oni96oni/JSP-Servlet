@@ -6,6 +6,18 @@
 	<link rel="stylesheet" type="text/css" href="/static/bs5/css/bootstrap.min.css">
 	<script type="text/javascript" src="/static/bs5/js/bootstrap.min.js"></script>
 </head>
+<script type="text/javascript">
+	function formCheck(form) {
+		if(form.title.value === undefined || form.title.value.trim() === "") {
+			var modal = new bootstrap.Modal(document.getElementById("errorModal"),{
+				keyboard: false
+			});
+			modal.show();
+			return;
+		}
+		form.submit();
+	}
+</script>
 <body>
 	<header></header>
 	<section class="container">
@@ -18,16 +30,16 @@
 					<textarea class="form-control" name="content" rows="8" placeholder="내용을 입력하세요"></textarea>
 				</div>
 				<div class="mb-3 text-end">
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">저장</button>
+					<button type="button" class="btn btn-primary" onclick="formCheck(this.form);">저장</button>
 				</div>
 			</form>
 		</div>
 		<!-- Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h6 class="modal-title" id="exampleModalLabel">입력 오류</h6>
+		        <h6 class="modal-title">입력 오류</h6>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		      <div class="modal-body">
