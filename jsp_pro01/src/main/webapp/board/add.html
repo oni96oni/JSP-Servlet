@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>게시글 등록</title>
+	<link rel="stylesheet" type="text/css" href="/static/bs5/css/bootstrap.min.css">
+	<script type="text/javascript" src="/static/bs5/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<header></header>
+	<section class="container">
+		<div>
+			<form action="/board/add" method="post">
+				<div class="mb-3">
+					<input class="form-control" type="text" name="title" placeholder="제목을 입력하세요">
+				</div>
+				<div class="mb-3">
+					<textarea class="form-control" name="content" rows="8" placeholder="내용을 입력하세요"></textarea>
+				</div>
+				<div class="mb-3 text-end">
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">저장</button>
+				</div>
+			</form>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h6 class="modal-title" id="exampleModalLabel">입력 오류</h6>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        제목은 공란을 입력할 수 없습니다.<br>
+		        반드시 제목을 입력하세요
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</section>
+	<footer></footer>
+</body>
+</html>
