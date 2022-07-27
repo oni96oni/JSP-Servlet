@@ -13,3 +13,7 @@ CREATE TABLE EMP_BOARDS (
 CREATE SEQUENCE EMP_BOARDS_SEQ NOCACHE;
 
 SELECT * FROM EMP_BOARDS;
+
+--insert 예시
+INSERT INTO EMP_BOARDS
+	VALUES(#{게시판번호들어가는 칸}, #{제목넣는 칸}, #{내용넣는 칸}, #{직원번호 들어가는 칸}, SYSDATE입력날짜(자동)칸)
