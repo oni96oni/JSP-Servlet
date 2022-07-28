@@ -4,10 +4,28 @@
   
 <mapper namespace="empBoardMapper">
 	<select id="getNextSeq" resultType="_int">
-		SELECT EMP_BOARD_SEQ.NEXTVAL FROM DUAL
+		SELECT EMP_BOARDS_SEQ.NEXTVAL FROM DUAL
 	</select>
 	<insert id="insertData" parameterType="empBoardDto">
-		INSERT INTO EMP_BOARDS
-		VALUES(#{id}, #{title}, #{content}, #{empId}, SYSDATE)
+		INSERT INTO EMP_BOARDS(ID, TITLE, CONTENT, EMPID, CREATEDATE)
+		     VALUES(#{id}, #{title}, #{content}, #{empId}, SYSDATE)
 	</insert>
+	<select id="selectData" resultType="empBoardDto">
+		SELECT ID, TITLE, CONTENT
+		     , EMPID, CREATEDATE
+		     , VIEW_CNT AS viewCnt
+		     , "LIKE"
+		  FROM EMP_BOARDS
+		 WHERE ID = #{id}
+	</select>
+	<update id="updateViewCnt" parameterType="empBoardDto">
+		UPDATE EMP_BOARDS
+		   SET VIEW_CNT = #{viewCnt} + 1
+		 WHERE ID = #{id}
+	</update>
+	<update id="updateLike" parameterType="empBoardDto">
+		UPDATE EMP_BOARDS
+		   SET "LIKE" = #{like} + 1
+		 WHERE ID= #{id}
+	</update>
 </mapper>

@@ -35,8 +35,8 @@ public class EmpBoardAddController extends HttpServlet {
 		EmpBoardDTO data = new EmpBoardDTO();
 		data.setTitle(title);
 		data.setContent(content);
-//		data.setEmpId(((EmpsDTO)session.getAttribute("loginData")).getEmpId());
-		data.setEmpId(100);
+		data.setEmpId(((EmpsDTO)session.getAttribute("loginData")).getEmpId());
+//		data.setEmpId(100);
 		
 		int boardId = service.add(data);
 		if(boardId > 0) {
