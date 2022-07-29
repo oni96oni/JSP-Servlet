@@ -1,10 +1,13 @@
 package board.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
+
+import javax.servlet.http.HttpSession;
 
 import board.model.EmpBoardDAO;
 import board.model.EmpBoardDTO;
+import board.model.EmpBoardStaticsDTO;
+import emps.model.EmpsDTO;
 
 public class EmpBoardService {
 	
@@ -36,10 +39,33 @@ public class EmpBoardService {
 		return data;
 	}
 
-	public void incViewCnt(EmpBoardDTO data) {
+	public void incViewCnt(HttpSession session, EmpBoardDTO data) {
 		EmpBoardDAO dao = new EmpBoardDAO();
 		
-		boolean result = dao.updateViewCnt(data);
+		// 조회카운트를 늘리기 전에 조회를 했었던 기록이 있는지 확인
+		EmpBoardStaticsDTO staticsData = new EmpBoardStaticsDTO();
+		staticsData.setbId(data.getId());
+		staticsData.setEmpId(((EmpsDTO)session.getAttribute("loginData")).getEmpId());
+		staticsData = dao.selectStatics(staticsData);
+		boolean result = false;
+		
+		// 접속했던 기록이 없으면 기록 남기기
+		if(staticsData == null) {
+			result = dao.updateViewCnt(data);
+			
+			staticsData = new EmpBoardStaticsDTO();
+			staticsData.setbId(data.getId());
+			staticsData.setEmpId(((EmpsDTO)session.getAttribute("loginData")).getEmpId());
+			
+			dao.insertStatics(staticsData);
+		} else {
+			long timeDiff = new Date().getTime() - staticsData.getLatestViewDate().getTime();
+			if(timeDiff / (1000 * 60 * 60 * 24) >= 7) {
+				result = dao.updateViewCnt(data);
+				dao.updateStatics(staticsData);
+			}
+		}
+		
 		if(result) {
 			data.setViewCnt(data.getViewCnt() + 1);
 			dao.commit();
@@ -49,8 +75,13 @@ public class EmpBoardService {
 		dao.close();
 	}
 
-	public void incLike(EmpBoardDTO data) {
+	public void incLike(HttpSession session, EmpBoardDTO data) {
 		EmpBoardDAO dao = new EmpBoardDAO();
+		
+		// 조회카운트를 늘리기 전에 조회를 했었던 기록이 있는지 확인
+		
+		// 접속했던 기록이 없으면 기록 남기기
+		
 		
 		boolean result = dao.updateLike(data);
 		if(result) {
@@ -61,4 +92,5 @@ public class EmpBoardService {
 		dao.rollback();
 		dao.close();
 	}
+
 }

@@ -16,6 +16,7 @@
 		<typeAlias type="emps.model.EmpsDetailDTO" alias="empsDetailDto" />
 		<typeAlias type="login.model.PermDTO" alias="permDto" />
 		<typeAlias type="board.model.EmpBoardDTO" alias="empBoardDto" />
+		<typeAlias type="board.model.EmpBoardStaticsDTO" alias="empBoardStaticsDto" />
 	</typeAliases>
 	<environments default="development">
 		<environment id="development">
