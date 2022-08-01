@@ -8,6 +8,7 @@ public class EmpBoardDTO {
 	private String title;
 	private String content;
 	private int empId;
+	private String empName;
 	private Date createDate;
 	private int viewCnt;
 	private int like;
@@ -44,6 +45,14 @@ public class EmpBoardDTO {
 		this.empId = empId;
 	}
 	
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -70,8 +79,8 @@ public class EmpBoardDTO {
 	
 	@Override
 	public String toString() {
-		return "EmpBoardDTO [id=" + id + ", title=" + title + ", content=" + content + ", empId=" + empId
-				+ ", createDate=" + createDate + ", viewCnt=" + viewCnt + ", like=" + like + "]";
+		return "EmpBoardDTO [id=" + id + ", title=" + title + ", content=" + content + ", empId=" + empId + ", empName="
+				+ empName + ", createDate=" + createDate + ", viewCnt=" + viewCnt + ", like=" + like + "]";
 	}
 
 }

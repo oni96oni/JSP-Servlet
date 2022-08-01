@@ -25,13 +25,14 @@
 	</update>
 	<update id="updateLike" parameterType="empBoardDto">
 		UPDATE EMP_BOARDS
-		   SET "LIKE" = #{like} + 1
+		   SET "LIKE" = #{like}
 		 WHERE ID= #{id}
 	</update>
 	<select id="selectStatics" parameterType="empBoardStaticsDto" resultType="empBoardStaticsDto">
 		SELECT ID, EMPID, BID
 			 , VIEWED
 			 , LATEST_VIEW_DATE AS latestViewDate
+			 , LIKED
 		  FROM EMP_BOARDS_STATICS
 		 WHERE EMPID = #{empId}
 		   AND BID = #{bId}
@@ -39,11 +40,35 @@
 	<insert id="insertStatics" parameterType="empBoardStaticsDto">
 		INSERT INTO EMP_BOARDS_STATICS
 			 VALUES(EMP_BOARDS_STATICS_SEQ.NEXTVAL
-			 	  , #{empId}, #{bId}, 'Y', SYSDATE)
+			 	  , #{empId}, #{bId}, 'Y', SYSDATE, 'N')
 	</insert>
 	<update id="updateStatics" parameterType="empBoardStaticsDto">
 		UPDATE EMP_BOARDS_STATICS
 		   SET LATEST_VIEW_DATE = SYSDATE
 		 WHERE ID = #{id}
 	</update>
+	<update id="updateStaticsLike" parameterType="empBoardStaticsDto">
+		UPDATE EMP_BOARDS_STATICS
+		<choose>
+			<when test="liked">
+				SET LIKED = 'Y'
+			</when>
+			<otherwise>
+				SET LIKED = 'N'
+			</otherwise>
+		</choose>
+		 WHERE ID = #{id}
+	</update>
+	<select id="selectAll" resultType="empBoardDto">
+		SELECT B.ID, B.TITLE, B.CONTENT
+		     , B.EMPID
+		     , E.FIRST_NAME || ' ' || E.LAST_NAME AS EMPNAME
+		     , B.CREATEDATE
+		     , B.VIEW_CNT AS viewCnt
+		     , B."LIKE"
+		  FROM EMP_BOARDS B
+		  JOIN EMPLOYEES E
+		    ON B.EMPID = E.EMPLOYEE_ID
+		 ORDER BY B.ID DESC
+	</select>
 </mapper>

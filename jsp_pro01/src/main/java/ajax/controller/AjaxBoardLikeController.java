@@ -25,8 +25,8 @@ public class AjaxBoardLikeController extends HttpServlet {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
 		if(data != null) {
-			service.incLike(data);
-			sb.append(String.format("\"%s\": \"%d\"", "like", data.getLike()));
+			service.incLike(request.getSession(), data);
+			sb.append(String.format("\"%s\": %d", "like", data.getLike()));
 		}
 		sb.append("}");
 		response.getWriter().append(sb.toString());

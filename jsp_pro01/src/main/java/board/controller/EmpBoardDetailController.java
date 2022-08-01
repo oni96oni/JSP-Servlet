@@ -39,8 +39,6 @@ public class EmpBoardDetailController extends HttpServlet {
 			service.incViewCnt(session, data);
 			EmpsDTO empData = empsService.getId("" + data.getEmpId());
 			
-			service.incLike(session, data);
-			
 			request.setAttribute("data", data);
 			request.setAttribute("empData", empData);
 			
