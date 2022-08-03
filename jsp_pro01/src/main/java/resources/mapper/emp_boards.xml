@@ -30,17 +30,17 @@
 	</update>
 	<select id="selectStatics" parameterType="empBoardStaticsDto" resultType="empBoardStaticsDto">
 		SELECT ID, EMPID, BID
-			 , VIEWED
-			 , LATEST_VIEW_DATE AS latestViewDate
-			 , LIKED
+		     , VIEWED
+		     , LATEST_VIEW_DATE AS latestViewDate
+		     , LIKED
 		  FROM EMP_BOARDS_STATICS
 		 WHERE EMPID = #{empId}
 		   AND BID = #{bId}
 	</select>
 	<insert id="insertStatics" parameterType="empBoardStaticsDto">
 		INSERT INTO EMP_BOARDS_STATICS
-			 VALUES(EMP_BOARDS_STATICS_SEQ.NEXTVAL
-			 	  , #{empId}, #{bId}, 'Y', SYSDATE, 'N')
+		     VALUES(EMP_BOARDS_STATICS_SEQ.NEXTVAL
+		          , #{empId}, #{bId}, 'Y', SYSDATE, 'N')
 	</insert>
 	<update id="updateStatics" parameterType="empBoardStaticsDto">
 		UPDATE EMP_BOARDS_STATICS
@@ -71,4 +71,12 @@
 		    ON B.EMPID = E.EMPLOYEE_ID
 		 ORDER BY B.ID DESC
 	</select>
+	<delete id="deleteStaticsData">
+		DELETE FROM EMP_BOARDS_STATICS
+		 WHERE BID = #{bId}
+	</delete>
+	<delete id="deleteData">
+		DELETE FROM EMP_BOARDS
+		 WHERE ID = #{id}
+	</delete>
 </mapper>

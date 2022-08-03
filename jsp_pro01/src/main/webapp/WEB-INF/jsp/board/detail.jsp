@@ -50,10 +50,53 @@
 				</div>
 			</div>
 			<div class="mb-1 text-end">
-				<button class="btn btn-primary" type="button">수정</button>
+				<c:url var="boardUrl" value="/board" />
+				<button class="btn btn-primary" type="button" onclick="location.href='${boardUrl}'">목록</button>
+				<c:if test="${data.empId eq sessionScope.loginData.empId}">
+					<button class="btn btn-success" type="button">수정</button>
+					<button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#removeModal">삭제</button>
+				</c:if>
+			</div>
+		</div>
+		<div class="modal fade" id="removeModal" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h6 class="modal-title">삭제 확인</h6>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						해당 데이터를 삭제하겠습니까?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" onclick="deleteBoard(${data.id})">확인</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
 	<footer></footer>
+	<script type="text/javascript">
+		function deleteBoard(boardId) {
+			$.ajax({
+				url: "/board/delete",
+				type: "post",
+				data: {
+					id: boardId
+				},
+				dataType: "json",
+				success: function(data) {
+					if(data.code === "success") {
+						alert("삭제 완료");
+						location.href = "/board";
+					} else if(data.code === "permissionError") {
+						alert("권한이 오류");
+					} else if(data.code === "notExists") {
+						alert("이미 삭제되었습니다.")
+					}
+				}
+			});
+		}
+	</script>
 </body>
 </html>

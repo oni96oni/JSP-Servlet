@@ -13,7 +13,7 @@ public class Paging {
 	private List<Integer> pageNumberList;
 	private List<Object> pageData;
 	
-	public Paging(List<Object> datas, int currentPageNumber, int limit, int totalRow) {
+	public Paging(List<Object> datas, int currentPageNumber, int limit) {
 		this.offset = limit * (currentPageNumber - 1);
 		this.limit = limit;
 		this.currentPageNumber = currentPageNumber;
@@ -21,10 +21,12 @@ public class Paging {
 		this.prevPageNumber = currentPageNumber - 1;
 		int pageNum = 1;
 		this.pageNumberList = new ArrayList<Integer>();
-		for(int i = 0; i < totalRow; i += limit) {
+		for(int i = 0; i < datas.size(); i += limit) {
 			this.pageNumberList.add(pageNum++);
 		}
-		this.pageData = datas.subList(this.offset, this.offset + this.limit);
+		int max = this.offset + this.limit;
+		max = max < datas.size() ? max : datas.size();
+		this.pageData = datas.subList(this.offset, max);
 	}
 	
 	public int getOffset() {
@@ -52,6 +54,8 @@ public class Paging {
 	}
 	
 	public List<Integer> getPageNumberList(int start, int end) {
+		start = start > 0 ? start : 1;
+		end = end < this.pageNumberList.size() ? end : this.pageNumberList.size();
 		return pageNumberList.subList(start - 1, end);
 	}
 	

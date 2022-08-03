@@ -7,43 +7,47 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>직원</title>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/default.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/form.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/navigation.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/paging.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/required.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/table.css">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/required.js"></script>
+	<title>게시판</title>
+	<link rel="stylesheet" type="text/css" href="/static/bs5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+	<script type="text/javascript" src="/static/bs5/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+	<header class="mb-3"></header>
 	<section class="container">
-		<div>
+		<div class="mb-1">
 			<c:url var="boardUrl" value="/board" />
 			<form action="${boardUrl}" method="get">
-				<div class="input-form form-left">
-					<button class="btn btn-outline" type="button" onclick="location.href='${boardUrl}/add'">추가</button>
-				</div>
-				<div class="input-form form-right">
-					<input class="input-text" type="text" name="search">
-					<button class="btn btn-outline" type="submit">조회</button>
-					<select class="select-form" onchange="location.href='${boardUrl}?pgc=' + this.value">
-						<option value="5" ${pgc == 5 ? 'selected' : ''}>5 개</option>
-						<option value="10" ${pgc == 10 ? 'selected' : ''}>10 개</option>
-						<option value="15" ${pgc == 15 ? 'selected' : ''}>15 개</option>
-						<option value="20" ${pgc == 20 ? 'selected' : ''}>20 개</option>
-					</select>
+				<div class="row g-1">
+					<div class="col-8">
+						<button class="btn btn-secondary" type="button" onclick="location.href='${boardUrl}/add'">추가</button>
+					</div>
+					<div class="col-3">
+						<div class="input-group">
+							<input class="form-control" type="text" name="search">
+							<button class="btn btn-secondary" type="submit">조회</button>
+						</div>
+					</div>
+					<div class="col-1">
+						<select class="form-select" onchange="location.href='${boardUrl}?pgc=' + this.value">
+							<option value="5" ${pgc == 5 ? 'selected' : ''}>5 개</option>
+							<option value="10" ${pgc == 10 ? 'selected' : ''}>10 개</option>
+							<option value="15" ${pgc == 15 ? 'selected' : ''}>15 개</option>
+							<option value="20" ${pgc == 20 ? 'selected' : ''}>20 개</option>
+						</select>
+					</div>
 				</div>
 			</form>
 		</div>
-		<table class="table wide vertical-hidden hover">
+		<table class="table table-hover">
 			<colgroup>
-				<col class="col-120">
-				<col class="col-240">
-				<col class="col-120">
-				<col class="col-120">
-				<col class="col-120">
-				<col class="col-120">
+				<col class="col-1">
+				<col class="col-auto">
+				<col class="col-2">
+				<col class="col-1">
+				<col class="col-1">
+				<col class="col-2">
 			</colgroup>
 			<thead>
 				<tr>
@@ -73,6 +77,27 @@
 				</c:if>
 			</tbody>
 		</table>
+		<nav>
+			<div>
+				<ul class="pagination justify-content-center">
+					<c:if test="${datas.hasPrevPage()}">
+						<li class="page-item">
+							<a class="page-link" href="${boardUrl}?page=${datas.prevPageNumber}">Prev</a>
+						</li>
+					</c:if>
+					<c:forEach items="${datas.getPageNumberList(datas.currentPageNumber - 2, datas.currentPageNumber + 2)}" var="num">
+						<li class="page-item ${datas.currentPageNumber eq num ? 'active' : ''}">
+							<a class="page-link" href="${boardUrl}?page=${num}">${num}</a>
+						</li>
+					</c:forEach>
+					<c:if test="${datas.hasNextPage()}">
+						<li class="page-item">
+							<a class="page-link" href="${boardUrl}?page=${datas.nextPageNumber}">Next</a>
+						</li>
+					</c:if>
+				</ul>
+			</div>
+		</nav>
 	</section>
 </body>
 </html>
