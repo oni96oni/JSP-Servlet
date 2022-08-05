@@ -53,11 +53,52 @@
 				<c:url var="boardUrl" value="/board" />
 				<button class="btn btn-primary" type="button" onclick="location.href='${boardUrl}'">목록</button>
 				<c:if test="${data.empId eq sessionScope.loginData.empId}">
-					<button class="btn btn-success" type="button">수정</button>
+					<button class="btn btn-success" type="button" onclick="location.href='${boardUrl}/modify?id=${data.id}'">수정</button>
 					<button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#removeModal">삭제</button>
 				</c:if>
 			</div>
 		</div>
+		
+		<div class="mt-3 mb-3">
+			<c:forEach items="${commentDatas}" var="comment">
+				<div class="mb-1">
+					<div class="card border-light">
+						<div class="card-header">
+							<div class="d-flex justify-content-between">
+								<span><small>${comment.empName}</small></span>
+								<span><small>${comment.createDate}</small></span>
+							</div>
+						</div>
+						<div class="card-body">
+							<c:choose>
+								<c:when test="${comment.isDeleted()}">
+									<p class="text-muted">삭제된 댓글 입니다.</p>
+								</c:when>
+								<c:otherwise>
+									<p>${comment.content}</p>
+								</c:otherwise>
+							</c:choose>
+							<c:if test="${sessionScope.loginData.empId eq comment.empId}">
+								<div class="text-end">
+									<button class="btn btn-sm btn-outline-dark" type="button">수정</button>
+									<button class="btn btn-sm btn-outline-dark" type="button" onclick="commentDelete(this, ${comment.id})">삭제</button>
+								</div>
+							</c:if>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+			<div class="mb-1">
+				<form action="/comment/add" method="post">
+					<input type="hidden" name="bid" value="${data.id}">
+					<div class="input-group">
+						<textarea class="form-control" name="content" rows="2"></textarea>
+						<button class="btn btn-outline-dark" type="button" onclick="formCheck(this.form);">등록</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		
 		<div class="modal fade" id="removeModal" tabindex="-1" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -77,6 +118,27 @@
 	</section>
 	<footer></footer>
 	<script type="text/javascript">
+		function commentDelete(element, id) {
+			$.ajax({
+				url: "/comment/delete",
+				type: "post",
+				data: {
+					id: id
+				},
+				success: function(data) {
+					if(data.code === "success") {
+						element.parentElement.parentElement.parentElement.parentElement.remove();
+					}
+				}
+			});
+		}
+		function formCheck(form) {
+			if(form.content.value.trim() === "") {
+				alert("댓글 내용을 입력하세요.");
+			} else {
+				form.submit();
+			}
+		}
 		function deleteBoard(boardId) {
 			$.ajax({
 				url: "/board/delete",

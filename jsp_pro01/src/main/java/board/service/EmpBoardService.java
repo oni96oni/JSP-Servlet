@@ -133,4 +133,18 @@ public class EmpBoardService {
 		return result;
 	}
 
+	public boolean modify(EmpBoardDTO data) {
+		EmpBoardDAO dao = new EmpBoardDAO();
+		boolean result = dao.update(data);
+		
+		if(result) {
+			dao.commit();
+		} else {
+			dao.rollback();
+		}
+		dao.close();
+		
+		return result;
+	}
+
 }

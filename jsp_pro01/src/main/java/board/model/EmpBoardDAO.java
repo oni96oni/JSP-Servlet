@@ -87,6 +87,12 @@ public class EmpBoardDAO {
 		return res == 1 ? true : false;
 	}
 	
+	public boolean update(EmpBoardDTO data) {
+		String mapperId = String.format(mapper, "updateData");
+		int res = session.update(mapperId, data);
+		return res == 1 ? true : false;
+	}
+	
 	public void commit() {
 		this.session.commit();
 	}
@@ -98,4 +104,5 @@ public class EmpBoardDAO {
 	public void close() {
 		this.session.close();
 	}
+
 }

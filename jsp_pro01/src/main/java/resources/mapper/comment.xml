@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="commentMapper">
+	<select id="selectData" resultType="commentDto">
+		SELECT C.ID
+			 , C.BID
+			 , EMPID
+			 , E.FIRST_NAME || ' ' || E.LAST_NAME AS empName
+			 , C.CONTENT, C.CREATEDATE
+			 , C.DELETED
+			 , C.HIDDEN
+			 , C.LIKECNT
+		  FROM COMMENTS C
+		  JOIN EMPLOYEES E
+		    ON C.EMPID = E.EMPLOYEE_ID
+		 WHERE C.ID = #{id}
+	</select>
+	<select id="selectDatas" resultType="commentDto">
+		SELECT C.ID
+			 , C.BID
+			 , EMPID
+			 , E.FIRST_NAME || ' ' || E.LAST_NAME AS empName
+			 , C.CONTENT, C.CREATEDATE
+			 , C.DELETED
+			 , C.HIDDEN
+			 , C.LIKECNT
+		  FROM COMMENTS C
+		  JOIN EMPLOYEES E
+		    ON C.EMPID = E.EMPLOYEE_ID
+		 WHERE C.BID = #{bid}
+	</select>
+	<insert id="insertData" parameterType="commentDto">
+		INSERT INTO COMMENTS(ID, BID, EMPID, CONTENT, HIDDEN, DELETED)
+			 VALUES(COMMENTS_SEQ.NEXTVAL, #{bId}, #{empId}, #{content}, 'N', 'N')
+	</insert>
+	<delete id="deleteId">
+		DELETE FROM COMMENTS
+		 WHERE EMPLOYEE_ID = #{id}
+	</delete>
+	<update id="deleteData" parameterType="commentDto">
+		UPDATE COMMENTS
+		   SET DELETED = 'Y'
+		 WHERE ID = #{id}
+	</update>
+</mapper>
