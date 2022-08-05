@@ -3,45 +3,51 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="commentMapper">
+	<insert id="insertData" parameterType="commentDto">
+		INSERT INTO COMMENTS(ID, BID, EMPID, CONTENT, HIDDEN, DELETED)
+			 VALUES(COMMENTS_SEQ.NEXTVAL
+			      , #{bId}, #{empId}, #{content}
+			      , 'N', 'N')
+	</insert>
+	<select id="selectDatas" resultType="commentDto">
+		SELECT C.ID
+		     , C.BID
+		     , EMPID
+		     , E.FIRST_NAME || ' ' || E.LAST_NAME AS empName
+		     , C.CONTENT
+		     , C.CREATEDATE
+		     , C.DELETED
+		     , C.HIDDEN
+		     , C.LIKECNT
+		  FROM COMMENTS C
+		  JOIN EMPLOYEES E
+		    ON C.EMPID = E.EMPLOYEE_ID
+		 WHERE C.BID = #{bId}
+		 ORDER BY C.ID
+	</select>
 	<select id="selectData" resultType="commentDto">
 		SELECT C.ID
-			 , C.BID
-			 , EMPID
-			 , E.FIRST_NAME || ' ' || E.LAST_NAME AS empName
-			 , C.CONTENT, C.CREATEDATE
-			 , C.DELETED
-			 , C.HIDDEN
-			 , C.LIKECNT
+		     , C.BID
+		     , EMPID
+		     , E.FIRST_NAME || ' ' || E.LAST_NAME AS empName
+		     , C.CONTENT
+		     , C.CREATEDATE
+		     , C.DELETED
+		     , C.HIDDEN
+		     , C.LIKECNT
 		  FROM COMMENTS C
 		  JOIN EMPLOYEES E
 		    ON C.EMPID = E.EMPLOYEE_ID
 		 WHERE C.ID = #{id}
 	</select>
-	<select id="selectDatas" resultType="commentDto">
-		SELECT C.ID
-			 , C.BID
-			 , EMPID
-			 , E.FIRST_NAME || ' ' || E.LAST_NAME AS empName
-			 , C.CONTENT, C.CREATEDATE
-			 , C.DELETED
-			 , C.HIDDEN
-			 , C.LIKECNT
-		  FROM COMMENTS C
-		  JOIN EMPLOYEES E
-		    ON C.EMPID = E.EMPLOYEE_ID
-		 WHERE C.BID = #{bid}
-	</select>
-	<insert id="insertData" parameterType="commentDto">
-		INSERT INTO COMMENTS(ID, BID, EMPID, CONTENT, HIDDEN, DELETED)
-			 VALUES(COMMENTS_SEQ.NEXTVAL, #{bId}, #{empId}, #{content}, 'N', 'N')
-	</insert>
-	<delete id="deleteId">
-		DELETE FROM COMMENTS
-		 WHERE EMPLOYEE_ID = #{id}
-	</delete>
 	<update id="deleteData" parameterType="commentDto">
 		UPDATE COMMENTS
 		   SET DELETED = 'Y'
+		 WHERE ID = #{id}
+	</update>
+	<update id="updateData" parameterType="commentDto">
+		UPDATE COMMENTS
+		   SET CONTENT = #{content}
 		 WHERE ID = #{id}
 	</update>
 </mapper>

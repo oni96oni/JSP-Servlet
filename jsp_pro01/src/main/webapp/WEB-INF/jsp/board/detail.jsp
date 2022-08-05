@@ -59,8 +59,33 @@
 			</div>
 		</div>
 		
+		<nav>
+			<div>
+				<ul class="pagination justify-content-center">
+					<c:url var="boardUrl" value="/board/detail">
+						<c:param name="id">${data.id}</c:param>
+					</c:url>
+					<c:if test="${commentPage.hasPrevPage()}">
+						<li class="page-item">
+							<a class="page-link" href="${boardUrl}&page=${commentPage.prevPageNumber}">Prev</a>
+						</li>
+					</c:if>
+					<c:forEach items="${commentPage.getPageNumberList(commentPage.currentPageNumber - 2, commentPage.currentPageNumber + 2)}" var="num">
+						<li class="page-item ${commentPage.currentPageNumber eq num ? 'active' : ''}">
+							<a class="page-link" href="${boardUrl}&page=${num}">${num}</a>
+						</li>
+					</c:forEach>
+					<c:if test="${commentPage.hasNextPage()}">
+						<li class="page-item">
+							<a class="page-link" href="${boardUrl}&page=${commentPage.nextPageNumber}">Next</a>
+						</li>
+					</c:if>
+				</ul>
+			</div>
+		</nav>
+		
 		<div class="mt-3 mb-3">
-			<c:forEach items="${commentDatas}" var="comment">
+			<c:forEach items="${commentPage.pageData}" var="comment">
 				<div class="mb-1">
 					<div class="card border-light">
 						<div class="card-header">
@@ -70,19 +95,23 @@
 							</div>
 						</div>
 						<div class="card-body">
+							<input type="hidden" value="${comment.id}">
 							<c:choose>
 								<c:when test="${comment.isDeleted()}">
 									<p class="text-muted">삭제된 댓글 입니다.</p>
 								</c:when>
 								<c:otherwise>
-									<p>${comment.content}</p>
+									<c:set var="newLine" value="<%= \"\n\" %>" />
+									<p class="card-text">${fn:replace(comment.content, newLine, '<br>')}</p>
 								</c:otherwise>
 							</c:choose>
 							<c:if test="${sessionScope.loginData.empId eq comment.empId}">
-								<div class="text-end">
-									<button class="btn btn-sm btn-outline-dark" type="button">수정</button>
-									<button class="btn btn-sm btn-outline-dark" type="button" onclick="commentDelete(this, ${comment.id})">삭제</button>
-								</div>
+								<c:if test="${not comment.isDeleted()}">
+									<div class="text-end">
+										<button class="btn btn-sm btn-outline-dark" type="button" onclick="changeEdit(this);">수정</button>
+										<button class="btn btn-sm btn-outline-dark" type="button" onclick="commentDelete(this, ${comment.id})">삭제</button>
+									</div>
+								</c:if>
 							</c:if>
 						</div>
 					</div>
@@ -118,6 +147,55 @@
 	</section>
 	<footer></footer>
 	<script type="text/javascript">
+		function changeEdit(element) {
+			element.innerText = "확인";
+			element.nextElementSibling.remove();
+			
+			var value = element.parentElement.previousElementSibling.innerText;
+			var textarea = document.createElement("textarea");
+			textarea.setAttribute("class", "form-control");
+			textarea.value = value;
+			
+			element.parentElement.previousElementSibling.innerText = "";
+			element.parentElement.previousElementSibling.append(textarea);
+			
+			element.setAttribute("onclick", "commentUpdate(this);");
+		}
+		
+		function changeText(element) {
+			element.innerText = "수정";
+			var cid = element.parentElement.parentElement.children[0].value;
+			var value = element.parentElement.previousElementSibling.children[0].value;
+			element.parentElement.previousElementSibling.children[0].remove();
+			element.parentElement.previousElementSibling.innerText = value;
+			
+			var btnDelete = document.createElement("button");
+			btnDelete.innerText = "삭제";
+			btnDelete.setAttribute("class", "btn btn-sm btn-outline-dark");
+			btnDelete.setAttribute("onclick", "commentDelete(this, " + cid + ");");
+			
+			element.parentElement.append(btnDelete);
+			element.setAttribute("onclick", "changeEdit(this);");
+		}
+		
+		function commentUpdate(element) {
+			var cid = element.parentElement.parentElement.children[0].value;
+			var value = element.parentElement.previousElementSibling.children[0].value;
+			
+			$.ajax({
+				url: "/comment/modify",
+				type: "post",
+				data: {
+					id: cid,
+					content: value
+				},
+				success: function(data) {
+					element.parentElement.previousElementSibling.children[0].value = data.value
+					changeText(element);
+				}
+			});
+		}
+		
 		function commentDelete(element, id) {
 			$.ajax({
 				url: "/comment/delete",
